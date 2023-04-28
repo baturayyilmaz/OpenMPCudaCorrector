@@ -1,0 +1,14 @@
+API KEY: "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"
+
+PREPARING JSONL COMMAND:
+"openai tools fine_tunes.prepare_data -f data02.jsonl"
+
+FINE_TUNING COMMAND: 
+"openai --api-key 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 api fine_tunes.create -t data02_prepared.jsonl -m davinci --suffix "codeGenerate""
+
+LIST ALL CREATED FINE_TUNES COMMAND:
+"openai --api-key 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 api fine_tunes.list"
+
+
+RESUME THE STREAM COMMAND:
+"openai --api-key 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 api fine_tunes.follow -i [NAME_OF_CREATED_FINE_TUNE]"
