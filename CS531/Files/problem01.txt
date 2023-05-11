@@ -1,22 +1,22 @@
-double sumArrPar_01(int arr[]){
-	int nthreads = 16;
-	double total = 0;
-	double s_priv[nthreads] = {0};
+double <FUNC_NAME>(int <PARAM_1>[]){
+	int <VAR_1> = 16;
+	double <VAR_2> = 0;
+	double <VAR_3>[<VAR_1>] = {0};
 
-	#pragma omp parallel num_threads(nthreads)
+	#pragma omp parallel num_threads(<VAR_1>)
 	{
 		int t = omp_get_thread_num();
 		#pragma omp for
-		for (int i = 0; i < ARRAY_SIZE; i++){
-			s_priv[t] += arr[i];
+		for (int i = 0; i < <VAR_4>; i++){
+			<VAR_3>[t] += <PARAM_1>[i];
 		}	
 	}
 
-	for (int i = 0; i < nthreads; i++)
+	for (int i = 0; i < <VAR_1>; i++)
 	{
-		total += s_priv[i];
+		<VAR_2> += <VAR_3>[i];
 	}
 
-	return total;
+	return <VAR_2>;
 }
 
