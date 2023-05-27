@@ -1,7 +1,8 @@
 import os
+from copy import deepcopy
 
 def generateJSONL(prompData, completionData, outputFileName):
-    FILE_PATH="C:\\Users\\suuser\\Desktop\\PythonWorkspace\\CS531\\jsonlFiles"
+    FILE_PATH="jsonlFiles\\"
     outputFilePath = os.path.join(FILE_PATH, outputFileName)
     
     with open(outputFilePath, "w") as file:
@@ -19,94 +20,116 @@ def generateJSONL(prompData, completionData, outputFileName):
             file.write(line)
 
 
+def getListOfCombinationsFromFileContent(content):
+    FUNCTION_NAMES = ["foo", "bar"] # function name
+    PARAMS_1 = ["param1"] # first parameter names
+    PARAMS_2 = ["param2"] # second parameter names. (For our case there are at most 2 params)
+    VARIABLE_1 = ["nthreads"] # variable for number of thread
+    VARIABLE_2 = ["output", "result"] # returned variable
+    VARIABLE_3 = ["s_priv"] # variable that holds the result computed by each thread
+    VARIABLE_4 = ["ARRAY_SIZE", "N"] # variable name for global array size
+    VARIABLE_PAD = ["PAD"] # variable used for padding the array for fixing the false sharing
+    # <VAR_PAD> is only in solution files. 
+    # So, if it has more than one value, there will be more than 1 solution fo each problem.
+
+    tokenDict = {}
+    if "<FUNC_NAME>" in content:
+        tokenDict["<FUNC_NAME>"] = FUNCTION_NAMES
+    if "<PARAM_1>" in content:
+        tokenDict["<PARAM_1>"] = PARAMS_1
+    if "<PARAM_2>" in content:
+        tokenDict["<PARAM_2>"] = PARAMS_2
+    if "<VAR_1>" in content:
+        tokenDict["<VAR_1>"] = VARIABLE_1
+    if "<VAR_2>" in content:
+        tokenDict["<VAR_2>"] = VARIABLE_2
+    if "<VAR_3>" in content:
+        tokenDict["<VAR_3>"] = VARIABLE_3
+    if "<VAR_4>" in content:
+        tokenDict["<VAR_4>"] = VARIABLE_4
+    if "<VAR_PAD>" in content:
+        tokenDict["<VAR_PAD>"] = VARIABLE_PAD
+
+    combinations = []
+    for valList in tokenDict.values(): # valList is a list of values for a token
+        if len(combinations) == 0:
+            for i in range(0, len(valList)):
+                combinations.append([valList[i]])
+        else:
+            val = valList[0]
+            for j in range(0, len(combinations)):
+                combinations[j].append(val)
+
+            for i in range(1, len(valList)):
+                temp = deepcopy(combinations) # temp is a list of list
+                for j in range(0, len(temp)): # temp[j] is a list of a single combination
+                    temp[j][len(temp[j])-1] = valList[i] # replace last element of the combination with new value in valList
+                    combinations.append(temp[j])
+    return combinations, tokenDict
+
+def handleFiles(fileType):
+    counter = 0
+    for i in range(1, 16):
+        fileName = f"{fileType}{i:02d}.txt"
+        
+        with open(f"Files\\{fileName}", "r") as file:
+            content = file.read()
+            
+            combinations, tokenDict = getListOfCombinationsFromFileContent(content)
+
+            keyList = list(tokenDict.keys())
+            for combination in combinations:
+                copyContent = deepcopy(content)
+                for i in range(0, len(keyList)): # keyList and combination should be of same size.
+                    copyContent = copyContent.replace(str(keyList[i]), combination[i])
+                temp = fileName.replace(".txt", "")
+                with open(f"AugmentedData\\{temp}_augment{counter:03d}.txt", "w") as oFile:
+                    oFile.write(copyContent)
+                    counter += 1
+
+def augmentData():
+    handleFiles(fileType="problem")
+    handleFiles(fileType="solution")
+
+
 def main():
-    FILE_PATH="C:\\Users\\suuser\\Desktop\\PythonWorkspace\\CS531\\Files\\"
-    CLASS_OF_CODE="cache locality"
+    FILE_PATH="AugmentedData\\"
     problemCodes = []
     solutionCodes = []
     codeClasses=[]
+    # augmentData() # uncomment this line if you want to augment the data in Files directory
+ 
+    for root, dirs, files in os.walk(FILE_PATH):
+        problemCodes = ["" for _ in range(int(len(files) / 2))]
+        solutionCodes = ["" for _ in range(int(len(files) / 2))]
+        codeClasses = ["" for _ in range(int(len(files) / 2))]
 
+        for fileName in files:  # for each file in input file path
+            filePath = os.path.join(FILE_PATH, fileName)
+            fileNumber = int(fileName[-7:-4])
+            globalFileNumber = int(fileName.split("_")[0][-2:])
 
-    for i in range(1, 11):
-        problemFileName = f"problem{i:02d}.txt"
-        solutionFileName = f"solution{i:02d}.txt"
+            # filling problem and solution codes
+            code = ""
+            with open(filePath, "r") as file:
+                lines = file.readlines()
+                for line in lines:
+                    code += line.strip() + "$<n>$"
 
-        counter = 0
-        
-        FUNCTION_NAMES = ["foo", "bar"]
-        PARAMS = ["arr", "inArr"]
-        VARIABLE_1 = ["nthreads", "threadNum"]
-        VARIABLE_2 = ["output", "total"]
-        VARIABLE_3 = ["s_priv", "resultArr"]
-        VARIABLE_4 = ["ARRAY_SIZE", "SIZE"]
-        VARIABLE_PAD = ["PADDING", "PAD"]
-
-        for f in range(0, len(FUNCTION_NAMES)):
-            for p in range(0, len(PARAMS)):
-                for v1 in range(0, len(VARIABLE_1)):
-                    for v2 in range(0, len(VARIABLE_2)):
-                        for v3 in range(0, len(VARIABLE_3)):
-                            for v4 in range(0, len(VARIABLE_4)):
-
-                                # Problem text
-                                with open(f"Files\\{problemFileName}", "r") as file:
-                                    content = file.read()
-                                    content = content.replace("<FUNC_NAME>", FUNCTION_NAMES[f])
-                                    content = content.replace("<PARAM_1>", PARAMS[p])
-                                    content = content.replace("<VAR_1>", VARIABLE_1[v1])
-                                    content = content.replace("<VAR_2>", VARIABLE_2[v2])
-                                    content = content.replace("<VAR_3>", VARIABLE_3[v3])
-                                    content = content.replace("<VAR_4>", VARIABLE_4[v4])
-                                    temp = problemFileName.replace(".txt", "")
-                                    with open(f"AugmentedData\\{temp}_augment{counter}.txt", "w") as oFile:
-                                        oFile.write(content)
-
-                                for vp in range(0, len(VARIABLE_PAD)):
-                                    # Solution text
-                                    with open(f"Files\\{solutionFileName}", "r") as file:
-                                        content = file.read()
-                                        content = content.replace("<FUNC_NAME>", FUNCTION_NAMES[f])
-                                        content = content.replace("<PARAM_1>", PARAMS[p])
-                                        content = content.replace("<VAR_1>", VARIABLE_1[v1])
-                                        content = content.replace("<VAR_2>", VARIABLE_2[v2])
-                                        content = content.replace("<VAR_3>", VARIABLE_3[v3])
-                                        content = content.replace("<VAR_4>", VARIABLE_4[v4])
-                                        content = content.replace("<VAR_PAD>", VARIABLE_PAD[vp])
-                                        temp = solutionFileName.replace(".txt", "")
-                                        with open(f"AugmentedData\\{temp}_augment{counter}.txt", "w") as oFile:
-                                            oFile.write(content)
-                                
-                                counter += 1
-        break
-
-
-
-
-
-    # for root, dirs, files in os.walk(FILE_PATH):
-    #     problemCodes = ["" for _ in range(int(len(files) / 2))]
-    #     solutionCodes = ["" for _ in range(int(len(files) / 2))]
-    #     codeClasses = [CLASS_OF_CODE for _ in range(int(len(files) / 2))]
-    #     for fileName in files:  # for each file in input file path
-
-    #         filePath = os.path.join(FILE_PATH, fileName)
-    #         fileNumber = int(fileName[-6:-4])
-    #         code = ""
-    #         with open(filePath, "r") as file:
-    #             lines = file.readlines()
-    #             for line in lines:
-    #                 code += line.strip() + "$<n>$"
-
-    #             if "solution" in fileName:
-    #                 solutionCodes[fileNumber-1] = code
+                if "solution" in fileName:
+                    solutionCodes[fileNumber-1] = code
                 
-    #             elif "problem" in fileName:
-    #                 problemCodes[fileNumber-1] = code 
+                elif "problem" in fileName:
+                    problemCodes[fileNumber-1] = code
+            
+            # filling classes
+            if 1 <= globalFileNumber and globalFileNumber <= 10:
+                codeClasses[fileNumber-1] = "False Sharing"
+            else:
+                codeClasses[fileNumber-1] = "Loop Unrolling"
 
-
-
-    # generateJSONL(prompData=problemCodes, completionData=codeClasses, outputFileName="data01.jsonl")
-    # generateJSONL(prompData=problemCodes, completionData=solutionCodes, outputFileName="data02.jsonl")
+    generateJSONL(prompData=problemCodes, completionData=codeClasses, outputFileName="data01.jsonl")
+    generateJSONL(prompData=problemCodes, completionData=solutionCodes, outputFileName="data02.jsonl")
 
 
 
