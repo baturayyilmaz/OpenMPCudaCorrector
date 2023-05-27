@@ -1,22 +1,22 @@
-double divSumArrScalarPar_02(int arr[], int scalar){	
-	int nthreads = 16;
-	double total = 0;
-	int PADDING = 8;
-	double s_priv[nthreads * PADDING] = {0};	
+double <FUNC_NAME>(int <PARAM_1>[], int <PARAM_2>){	
+	int <VAR_1> = 16;
+	double <VAR_2> = 0;
+	int <VAR_PAD> = 8;
+	double <VAR_3>[<VAR_1> * <VAR_PAD>] = {0};	
 
-	#pragma omp parallel num_threads(nthreads)
+	#pragma omp parallel num_threads(<VAR_1>)
 	{
 		int t = omp_get_thread_num();
 		#pragma omp for
-		for (int i = 0; i < ARRAY_SIZE; i++){
-			s_priv[t * PADDING] += arr[i] / scalar;
+		for (int i = 0; i < <VAR_4>; i++){
+			<VAR_3>[t * <VAR_PAD>] += <PARAM_1>[i] / <PARAM_2>;
 		}	
 	}
 
-	for (int i = 0; i < nthreads; i++)
+	for (int i = 0; i < <VAR_1>; i++)
 	{
-		total += s_priv[i * PADDING];
+		<VAR_2> += <VAR_3>[i * <VAR_PAD>];
 	}
 
-	return total;
+	return <VAR_2>;
 }

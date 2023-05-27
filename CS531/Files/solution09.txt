@@ -1,31 +1,31 @@
-int minArrPar_02(int arr[]){	
+int <FUNC_NAME>(int <PARAM_1>[]){	
 	
-	int nthreads = 16;	
-	int result = 0;
-	int PAD = 8;
-	int s_priv[nthreads * PAD] = {0};
+	int <VAR_1> = 16;	
+	int <VAR_2> = 0;
+	int <VAR_PAD> = 8;
+	int <VAR_3>[<VAR_1> * <VAR_PAD>] = {0};
 	
-	#pragma omp parallel num_threads(nthreads)
+	#pragma omp parallel num_threads(<VAR_1>)
 	{
 		int t = omp_get_thread_num();
 		int minVal = 9999;
 		#pragma omp for
-		for (int i = 0; i < ARRAY_SIZE; i++){	
-			if (arr[i] < minVal){
-				minVal = arr[i];
-				s_priv[t * PAD] = arr[i];
+		for (int i = 0; i < <VAR_4>; i++){	
+			if (<PARAM_1>[i] < minVal){
+				minVal = <PARAM_1>[i];
+				<VAR_3>[t * <VAR_PAD>] = <PARAM_1>[i];
 			}
 		}
 	}
 
 	int temp = 9999;
-	for (int i = 0; i < nthreads; i++)
+	for (int i = 0; i < <VAR_1>; i++)
 	{
-		if (s_priv[i * PAD] < temp){
-			temp = s_priv[i * PAD];
-			result = temp;
+		if (<VAR_3>[i * <VAR_PAD>] < temp){
+			temp = <VAR_3>[i * <VAR_PAD>];
+			<VAR_2> = temp;
 		}
 	}
 
-	return result;
+	return <VAR_2>;
 }

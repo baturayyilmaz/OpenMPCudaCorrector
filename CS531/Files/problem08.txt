@@ -1,29 +1,29 @@
-int maxArrPar_01(int arr[]){
-	int nthreads = 16;	
-	int result = 0;
-	int s_priv[nthreads] = {0};
+int <FUNC_NAME>(int <PARAM_1>[]){
+	int <VAR_1> = 16;	
+	int <VAR_2> = 0;
+	int <VAR_3>[<VAR_1>] = {0};
 
-	#pragma omp parallel num_threads(nthreads)
+	#pragma omp parallel num_threads(<VAR_1>)
 	{
 		int t = omp_get_thread_num();
 		int maxVal = -1;
 		#pragma omp for
-		for (int i = 0; i < ARRAY_SIZE; i++){	
-			if (arr[i] > maxVal){
-				maxVal = arr[i];
-				s_priv[t] = arr[i];
+		for (int i = 0; i < <VAR_4>; i++){	
+			if (<PARAM_1>[i] > maxVal){
+				maxVal = <PARAM_1>[i];
+				<VAR_3>[t] = <PARAM_1>[i];
 			}
 		}
 	}
 	
 	int temp = -1;
-	for (int i = 0; i < nthreads; i++)
+	for (int i = 0; i < <VAR_1>; i++)
 	{
-		if (s_priv[i] > temp){
-			temp = s_priv[i];
-			result = temp;
+		if (<VAR_3>[i] > temp){
+			temp = <VAR_3>[i];
+			<VAR_2> = temp;
 		}
 	}
 
-	return result;
+	return <VAR_2>;
 }
