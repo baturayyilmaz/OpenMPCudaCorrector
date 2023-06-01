@@ -6,7 +6,7 @@ using namespace std;
 
 const int N = 100000000;
 
-int main() {
+int <FUNC_NAME>() {
     int* arr = new int[N];
     auto start = chrono::high_resolution_clock::now();
     

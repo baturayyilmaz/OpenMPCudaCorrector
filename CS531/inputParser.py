@@ -22,8 +22,9 @@ def generateJSONL(prompData, completionData, outputFileName):
 
 def getListOfCombinationsFromFileContent(content):
     FUNCTION_NAMES = ["foo", "bar", "main"] # function name
-    PARAMS_1 = ["param1"] # first parameter names
-    PARAMS_2 = ["param2"] # second parameter names. (For our case there are at most 2 params)
+    PARAMS_1 = ["a", "param1"] # first parameter names
+    PARAMS_2 = ["b", "param2"] # second parameter names. (For our case there are at most 2 params)
+    PARAMS_3 = ["c","param3"]
     VARIABLE_1 = ["nthreads"] # variable for number of thread
     VARIABLE_2 = ["output", "result"] # returned variable
     VARIABLE_3 = ["s_priv"] # variable that holds the result computed by each thread
@@ -39,6 +40,8 @@ def getListOfCombinationsFromFileContent(content):
         tokenDict["<PARAM_1>"] = PARAMS_1
     if "<PARAM_2>" in content:
         tokenDict["<PARAM_2>"] = PARAMS_2
+    if "<PARAM_3>" in content:
+        tokenDict["<PARAM_2>"] = PARAMS_3
     if "<VAR_1>" in content:
         tokenDict["<VAR_1>"] = VARIABLE_1
     if "<VAR_2>" in content:
