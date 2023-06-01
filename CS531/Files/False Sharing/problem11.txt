@@ -1,18 +1,18 @@
 #include <omp.h>
 #include <iostream>
 
-const int ARRAY_SIZE = 1000000;
-const int NUM_THREADS = 4;
+const int <VAR_4> = 1000000;
+const int <VAR_1> = 4;
 
-int main() {
-    int data[ARRAY_SIZE];
+int <FUNC_NAME>() {
+    int data[<VAR_4>];
     int i;
 
-    #pragma omp parallel num_threads(NUM_THREADS)
+    #pragma omp parallel num_threads(<VAR_1>)
     {
         int id = omp_get_thread_num();
 
-        for (i = id; i < ARRAY_SIZE; i += NUM_THREADS) {
+        for (i = id; i < <VAR_4>; i += <VAR_1>) {
             // The following line is the cause of false sharing
             data[i] += 1;
         }

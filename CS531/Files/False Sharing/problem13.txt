@@ -2,24 +2,24 @@
 #include <omp.h>
 #include <cstdio>
 
-const int ARRAY_SIZE = 10000;
-const int NUM_THREADS = 4;
+const int <VAR_4> = 10000;
+const int <VAR_1> = 4;
 
 int main() {
-    int data[ARRAY_SIZE];
+    int data[<VAR_4>];
 
     // Initialize data array
-    for (int i = 0; i < ARRAY_SIZE; i++) {
+    for (int i = 0; i < <VAR_4>; i++) {
         data[i] = i;
     }
 
     // Parallelize array update using OpenMP
-    #pragma omp parallel num_threads(NUM_THREADS)
+    #pragma omp parallel num_threads(<VAR_1>)
     {
         int thread_id = omp_get_thread_num();
 
         // Divide array into equal parts for each thread
-        int chunk_size = ARRAY_SIZE / NUM_THREADS;
+        int chunk_size = <VAR_4> / <VAR_1>;
         int start_index = thread_id * chunk_size;
         int end_index = start_index + chunk_size;
 
@@ -31,7 +31,7 @@ int main() {
     }
 
     // Print out updated array
-    for (int i = 0; i < ARRAY_SIZE; i++) {
+    for (int i = 0; i < <VAR_4>; i++) {
         std::cout << data[i] << " ";
     }
     std::cout << std::endl;

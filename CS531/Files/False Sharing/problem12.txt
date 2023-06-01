@@ -2,31 +2,31 @@
 #include <iostream>
 #include <omp.h>
 
-int MAX = 10000000;
+int <VAR_4> = 10000000;
 
 int main()
 {
 
   double start_time = omp_get_wtime();
 
-  double res[MAX],  kes[MAX], result[MAX];
+  double <PARAM_1>[<VAR_4>],  <PARAM_2>[<VAR_4>], <VAR_2>[<VAR_4>];
 
 #pragma omp parallel
 {
 
 #pragma omp for
-  for(int i=0;i<MAX;i++){
-    res[i] = 10;
+  for(int i=0;i<<VAR_4>;i++){
+    <PARAM_1>[i] = 10;
   }
 
 #pragma omp for
-  for(int i=0;i<MAX;i++){
-    kes[i] = 10;
+  for(int i=0;i<<VAR_4>;i++){
+    <PARAM_2>[i] = 10;
   }
 
 #pragma omp for
-  for(int i=0;i<MAX;i++){
-    result[i] = res[i] + kes[i];
+  for(int i=0;i<<VAR_4>;i++){
+    <VAR_2>[i] = <PARAM_1>[i] + <PARAM_2>[i];
   }
 
 }	

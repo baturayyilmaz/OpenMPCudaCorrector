@@ -21,14 +21,14 @@ def generateJSONL(prompData, completionData, outputFileName):
 
 
 def getListOfCombinationsFromFileContent(content):
-    FUNCTION_NAMES = ["foo", "bar"] # function name
+    FUNCTION_NAMES = ["foo", "bar", "main"] # function name
     PARAMS_1 = ["param1"] # first parameter names
     PARAMS_2 = ["param2"] # second parameter names. (For our case there are at most 2 params)
     VARIABLE_1 = ["nthreads"] # variable for number of thread
     VARIABLE_2 = ["output", "result"] # returned variable
     VARIABLE_3 = ["s_priv"] # variable that holds the result computed by each thread
     VARIABLE_4 = ["ARRAY_SIZE", "N"] # variable name for global array size
-    VARIABLE_PAD = ["PAD"] # variable used for padding the array for fixing the false sharing
+    VARIABLE_PAD = ["PAD", "PADDING"] # variable used for padding the array for fixing the false sharing
     # <VAR_PAD> is only in solution files. 
     # So, if it has more than one value, there will be more than 1 solution fo each problem.
 
@@ -99,7 +99,7 @@ def main():
     codeClasses=[]
     # augmentData() # uncomment this line if you want to augment the data in Files directory
  
-    for root, dirs, files in os.walk(FILE_PATH):
+    for _, _, files in os.walk(FILE_PATH):
         problemCodes = ["" for _ in range(int(len(files) / 2))]
         solutionCodes = ["" for _ in range(int(len(files) / 2))]
         codeClasses = ["" for _ in range(int(len(files) / 2))]
