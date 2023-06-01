@@ -1,0 +1,32 @@
+#include <iostream>
+#include <omp.h>
+
+#define <VAR_4> 1000000
+
+int <FUNC_NAME>() {
+    int <PARAM_1>[<VAR_4>];
+    int <PARAM_2>[<VAR_4>];
+    int <VAR_3>[<VAR_4>];
+
+    // Initialize arrays
+    for (int i = 0; i < <VAR_4>; i++) {
+        <PARAM_1>[i] = i;
+        <PARAM_2>[i] = i * 2;
+    }
+
+    #pragma omp parallel for
+    for (int i = 0; i < <VAR_4>; i += 2) {
+        <VAR_3>[i] = <PARAM_1>[i] + <PARAM_2>[i];
+    }
+
+    for (int i = 1; i < <VAR_4>; i += 2) {
+        c[i] = <PARAM_1>[i] - <PARAM_2>[i];
+    }
+
+    // Print the result
+    for (int i = 0; i < <VAR_4>; i++) {
+        std::cout << <VAR_3>[i] << " ";
+    }
+
+    return 0;
+}
