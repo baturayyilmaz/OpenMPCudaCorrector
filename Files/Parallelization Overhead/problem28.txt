@@ -1,20 +1,20 @@
 #include <stdio.h>
 #include <omp.h>
 
-#define ARRAY_SIZE 1000000
+#define <VAR_4> 1000000
 
-int main() {
+int <FUNC_NAME>() {
     int i;
-    int array[ARRAY_SIZE];
+    int array[<VAR_4>];
     int sum = 0;
 
     // Initialize the array
-    for (i = 0; i < ARRAY_SIZE; i++) {
+    for (i = 0; i < <VAR_4>; i++) {
         array[i] = i + 1;
     }
 
     #pragma omp parallel for reduction(+:sum)
-    for (i = 0; i < ARRAY_SIZE; i++) {
+    for (i = 0; i < <VAR_4>; i++) {
         sum += array[i];
     }
 

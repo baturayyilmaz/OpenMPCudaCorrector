@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <omp.h>
+
+void processSmallProblemSize(int problemSize) {
+    if (problemSize <= omp_get_max_threads()) {
+        // Perform the task sequentially
+        for (int i = 0; i < problemSize; i++) {
+            printf("Thread %d is processing a small problem\n", i);
+            // Perform the small problem task
+        }
+    } else {
+        #pragma omp parallel num_threads(problemSize)
+        {
+            int threadId = omp_get_thread_num();
+            printf("Thread %d is processing a small problem\n", threadId);
+            // Perform the small problem task
+        }
+    }
+}
+
+int main() {
+    int problemSize = 4;
+
+    // Process the small problem size
+    processSmallProblemSize(problemSize);
+
+    return 0;
+}
