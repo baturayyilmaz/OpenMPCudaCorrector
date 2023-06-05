@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>
+
+#define SIZE 1000000
+
+int main() {
+    int* array = (int*) malloc(SIZE * sizeof(int));
+
+    // Initialize the array
+    for (int i = 0; i < SIZE; i++) {
+        array[i] = i;
+    }
+
+    #pragma omp parallel for
+    for (int i = 0; i < SIZE; i++) {
+        int* temp = (int*) malloc(SIZE * sizeof(int));
+
+        // Perform some computation on the array
+        for (int j = 0; j < SIZE; j++) {
+            temp[j] = array[j] * 2;
+        }
+
+        // Update the original array with the computed values
+        for (int j = 0; j < SIZE; j++) {
+            array[j] = temp[j];
+        }
+
+        free(temp);
+    }
+
+    free(array);
+
+    return 0;
+}
