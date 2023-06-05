@@ -1,12 +1,15 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <omp.h>
 
 #define <VAR_4> 1000
 
-void preprocessData(double* data) {
+void processNonSequential(double* data) {
+    #pragma omp parallel for
     for (int i = 0; i < <VAR_4>; i++) {
-        // Perform some computation on data[i]
-        data[i] = data[i] * 2.0;
+        // Access data in a non-sequential manner
+        int index = rand() % <VAR_4>;
+        data[index] = data[index] * 2.0;
     }
 }
 
@@ -18,10 +21,10 @@ int <FUNC_NAME>() {
         data[i] = i + 1;
     }
 
-    // Perform data pre-processing
-    preprocessData(data);
+    // Perform non-sequential data processing
+    processNonSequential(data);
 
-    // Print the pre-processed data
+    // Print the processed data
     for (int i = 0; i < <VAR_4>; i++) {
         printf("%.2f ", data[i]);
     }

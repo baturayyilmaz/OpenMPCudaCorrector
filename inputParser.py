@@ -22,13 +22,13 @@ def generateJSONL(prompData, completionData, outputFileName):
 
 def getListOfCombinationsFromFileContent(content):
     FUNCTION_NAMES = ["foo", "bar", "main"] # function name
-    PARAMS_1 = ["a", "param1"] # first parameter names
-    PARAMS_2 = ["b", "param2"] # second parameter names. 
-    PARAMS_3 = ["c","param3"] # third parameter names. 
-    VARIABLE_1 = ["nthreads"] # variable for number of thread
+    PARAMS_1 = ["x","a", "d"] # first parameter names
+    PARAMS_2 = ["y", "b", "e"] # second parameter names. 
+    PARAMS_3 = ["z", "c", "f"] # third parameter names. 
+    VARIABLE_1 = ["nthreads", "nthrds", "NUM_THREADS"] # variable for number of thread
     VARIABLE_2 = ["output", "result"] # returned variable
     VARIABLE_3 = ["s_priv"] # variable that holds the result computed by each thread
-    VARIABLE_4 = ["ARRAY_SIZE", "N"] # variable name for global array size
+    VARIABLE_4 = ["size", "N", "SIZE"] # variable name for global array size
     VARIABLE_PAD = ["PAD", "PADDING"] # variable used for padding the array for fixing the false sharing
     # <VAR_PAD> is only in solution files. 
     # So, if it has more than one value, there will be more than 1 solution fo each problem.

@@ -1,20 +1,29 @@
-#include <iostream>
 #include <omp.h>
+#include <stdio.h>
 
-int calculateSum(int <PARAM_1>, int <PARAM_2>) {
-    return <PARAM_1> + <PARAM_2>;
+// A simple function that performs a calculation
+int performCalculation(int value) {
+    // Some expensive calculation
+    return value * value;
 }
 
 int <FUNC_NAME>() {
+    int <VAR_4> = 10;
+    int <VAR_2>[<VAR_4>];
 
-    int sum = 0;
-
-    #pragma omp parallel for reduction(+:sum)
-    for (int i = 0; i < 1000000; i++) {
-        sum += calculateSum(i, i + 1);
+    #pragma omp parallel
+    {
+        #pragma omp for
+        for (int i = 0; i < <VAR_4>; i++) {
+            // Calling the function inside the parallel block
+            <VAR_2>[i] = performCalculation(i);
+        }
     }
 
-    std::cout << "Sum: " << sum << std::endl;
+    // Print the results
+    for (int i = 0; i < <VAR_4>; i++) {
+        printf("Result[%d]: %d\n", i, <VAR_2>[i]);
+    }
 
     return 0;
 }

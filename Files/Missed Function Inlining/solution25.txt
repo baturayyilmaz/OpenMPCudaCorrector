@@ -1,35 +1,25 @@
-#include <iostream>
 #include <omp.h>
-#include <cmath>
+#include <stdio.h>
 
-inline int calculateDifference(int value, int mean) {
-    return pow(value - mean, 2);
+// A simple inline function that performs a mathematical operation
+inline int multiply(int a, int b) {
+    return a * b;
 }
 
 int <FUNC_NAME>() {
-
-    int <PARAM_1>[<VAR_4>];
-    int sum=0;
-    int diff=0;
+    int <VAR_4> = 10;
+    int <VAR_2>[<VAR_4>];
 
     #pragma omp parallel for
-    for(int i=0; i<<VAR_4>; i++){
-        <PARAM_1>[i] = rand() % 100;
-    }
-
-    #pragma omp parallel for reduction(+:diff)
-    for(int i=0; i<<VAR_4>; i++){
-        sum += <PARAM_1>[i];
-    }
-
-    double mean = sum / (double)<VAR_4>;
-
-    #pragma omp parallel for reduction(+:diff)
     for (int i = 0; i < <VAR_4>; i++) {
-        diff += calculateDifference(<PARAM_1>[i], mean);
+        // Calling the inline function multiple times
+        <VAR_2>[i] = multiply(i, i + 1);
     }
 
-    std::cout << "Variance : " << diff / (double)<VAR_4> - 1 << std::endl;
+    // Print the results
+    for (int i = 0; i < <VAR_4>; i++) {
+        printf("Result[%d]: %d\n", i, <VAR_2>[i]);
+    }
 
     return 0;
 }

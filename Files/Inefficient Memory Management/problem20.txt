@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>
+
+#define <VAR_4> 1000000
+
+int <FUNC_NAME>() {
+    int* <PARAM_1> = (int*) malloc(<VAR_4> * sizeof(int));
+
+    // Initialize the array
+    for (int i = 0; i < <VAR_4>; i++) {
+        <PARAM_1>[i] = i;
+    }
+
+    #pragma omp parallel for
+    for (int i = 0; i < <VAR_4>; i++) {
+        int* <PARAM_2> = (int*) malloc(<VAR_4> * sizeof(int));
+
+        // Perform some computation on the array
+        for (int j = 0; j < <VAR_4>; j++) {
+            <PARAM_2>[j] = <PARAM_1>[j] * 2;
+        }
+
+        // Update the original array with the computed values
+        for (int j = 0; j < <VAR_4>; j++) {
+            <PARAM_1>[j] = <PARAM_2>[j];
+        }
+
+        free(<PARAM_2>);
+    }
+
+    free(<PARAM_1>);
+
+    return 0;
+}

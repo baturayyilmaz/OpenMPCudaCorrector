@@ -27,7 +27,7 @@ void task3() {
     printf("Sum of array elements: %d\n", sum);
 }
 
-int main() {
+int <FUNC_NAME>() {
     #pragma omp parallel
     {
         #pragma omp sections

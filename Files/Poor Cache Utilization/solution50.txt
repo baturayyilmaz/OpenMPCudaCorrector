@@ -3,28 +3,28 @@
 
 #define <VAR_4> 1000
 
-void preprocessData(double* data) {
+void processContiguousAccess(int* data) {
     #pragma omp parallel for
     for (int i = 0; i < <VAR_4>; i++) {
-        // Perform some computation on data[i]
-        data[i] = data[i] * 2.0;
+        // Access data in a contiguous manner
+        data[i] += omp_get_thread_num();
     }
 }
 
 int <FUNC_NAME>() {
     // Initialize the data array
-    double data[<VAR_4>];
+    int data[<VAR_4>];
 
     for (int i = 0; i < <VAR_4>; i++) {
         data[i] = i + 1;
     }
 
-    // Perform data pre-processing
-    preprocessData(data);
+    // Process contiguous access on the data array
+    processContiguousAccess(data);
 
-    // Print the pre-processed data
+    // Print the modified data array
     for (int i = 0; i < <VAR_4>; i++) {
-        printf("%.2f ", data[i]);
+        printf("%d ", data[i]);
     }
     printf("\n");
 

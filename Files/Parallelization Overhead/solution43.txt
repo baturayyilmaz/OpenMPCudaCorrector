@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define NUM_TASKS 10
+
+void performTask(int taskId) {
+    printf("Thread %d: Performing task %d\n", omp_get_thread_num(), taskId);
+}
+
+int <FUNC_NAME>() {
+    #pragma omp parallel
+    {
+        for (int i = 0; i < NUM_TASKS; i++) {
+            #pragma omp single nowait
+            {
+                performTask(i);
+            }
+        }
+    }
+
+    return 0;
+}

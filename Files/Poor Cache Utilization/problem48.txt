@@ -2,11 +2,12 @@
 #include <omp.h>
 
 #define <VAR_4> 1000
+#define CACHE_LINE_SIZE 64
 
-void preprocessData(double* data) {
+void processStridedAccess(double* data, int stride) {
     #pragma omp parallel for
-    for (int i = 0; i < <VAR_4>; i++) {
-        // Perform some computation on data[i]
+    for (int i = 0; i < <VAR_4>; i += stride) {
+        // Access data with a larger stride
         data[i] = data[i] * 2.0;
     }
 }
@@ -19,10 +20,11 @@ int <FUNC_NAME>() {
         data[i] = i + 1;
     }
 
-    // Perform data pre-processing
-    preprocessData(data);
+    // Perform strided data processing
+    int stride = CACHE_LINE_SIZE / sizeof(double);  // Set the stride to cache line size
+    processStridedAccess(data, stride);
 
-    // Print the pre-processed data
+    // Print the processed data
     for (int i = 0; i < <VAR_4>; i++) {
         printf("%.2f ", data[i]);
     }

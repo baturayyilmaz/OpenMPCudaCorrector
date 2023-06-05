@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>
+
+#define <VAR_4> 100000
+
+void insertElement(int* array, int index, int element) {
+    for (int i = <VAR_4> - 1; i > index; i--) {
+        array[i] = array[i - 1];
+    }
+    array[index] = element;
+}
+
+void deleteElement(int* array, int index) {
+    for (int i = index; i < <VAR_4> - 1; i++) {
+        array[i] = array[i + 1];
+    }
+    array[<VAR_4> - 1] = 0;  // Reset the last element
+}
+
+int <FUNC_NAME>() {
+    int* <PARAM_1> = (int*)malloc(<VAR_4> * sizeof(int));
+
+    // Initialize the array
+    for (int i = 0; i < ARRAY_SIZE; i++) {
+        <PARAM_1>[i] = i;
+    }
+
+    int insertIndex = <VAR_4> / 2;  // Insert at the middle
+    int deleteIndex = <VAR_4> / 4;  // Delete from the quarter
+
+    // Insert an element
+    insertElement(<PARAM_1>, insertIndex, -1);
+
+    // Delete an element
+    deleteElement(<PARAM_1>, deleteIndex);
+
+    // Print the array
+    for (int i = 0; i < <VAR_4>; i++) {
+        printf("%d ", <PARAM_1>[i]);
+    }
+    printf("\n");
+
+    free(<PARAM_1>);
+
+    return 0;
+}

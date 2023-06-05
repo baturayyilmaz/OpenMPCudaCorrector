@@ -2,16 +2,16 @@
 #include <stdlib.h>
 #include <omp.h>
 
-#define NUM_THREADS 4
-#define NUM_ITERATIONS 10
+#define <VAR_1> 4
+#define <VAR_4> 10
 
-int main() {
+int <FUNC_NAME>() {
     // Set the number of threads
-    omp_set_num_threads(NUM_THREADS);
+    omp_set_num_threads(<VAR_1>);
 
     // Initialize the random seed for each thread
-    unsigned int seed[NUM_THREADS];
-    for (int i = 0; i < NUM_THREADS; i++) {
+    unsigned int seed[<VAR_1>];
+    for (int i = 0; i < <VAR_1>; i++) {
         seed[i] = (unsigned int)omp_get_thread_num();
     }
 
@@ -20,7 +20,7 @@ int main() {
     {
         int threadId = omp_get_thread_num();
 
-        for (int i = 0; i < NUM_ITERATIONS; i++) {
+        for (int i = 0; i < <VAR_4>; i++) {
             int randomNumber = rand_r(&seed[threadId]);
             printf("Thread %d - Random number: %d\n", threadId, randomNumber);
         }
