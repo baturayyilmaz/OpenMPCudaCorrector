@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define <VAR_1> 4
+
+int shared_variable = 0;
+
+void update_variable(int id) {
+    for (int i = 0; i < 1000000; i++) {
+        shared_variable += id;
+    }
+}
+
+int <FUNC_NAME>() {
+    omp_set_num_threads(<VAR_1>);
+    
+    #pragma omp parallel
+    {
+        int thread_id = omp_get_thread_num();
+        update_variable(thread_id);
+    }
+
+    printf("Shared variable value: %d\n", shared_variable);
+    
+    return 0;
+}

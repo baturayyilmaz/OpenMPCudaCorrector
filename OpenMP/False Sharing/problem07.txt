@@ -1,0 +1,29 @@
+double <FUNC_NAME>(){
+	
+	static long <VAR_4> = 100000;	
+	double step; 
+	double x;
+    double <VAR_2>;
+	step = 1.0/(double) <VAR_4>;
+
+	int <VAR_1> = 16;
+	double <VAR_3>[<VAR_1>] = {0};
+	
+	#pragma omp parallel num_threads(<VAR_1>)
+	{
+		int t = omp_get_thread_num();
+
+		#pragma omp for
+		for (int i = 0; i < <VAR_4>; i++){
+			x = (i + 0.5) * step;
+			<VAR_3>[t] += 4.0 / (1.0 + x*x);
+		}
+	}
+	
+	for (int i = 0; i < <VAR_1>; i++)
+	{
+		<VAR_2> += step * <VAR_3>[i];
+	}
+	
+	return <VAR_2>;
+}

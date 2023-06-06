@@ -2,6 +2,7 @@ import os
 from copy import deepcopy
 
 def generateJSONL(prompData, completionData, outputFileName):
+
     FILE_PATH="jsonlFiles\\"
     outputFilePath = os.path.join(FILE_PATH, outputFileName)
     
@@ -25,7 +26,7 @@ def getListOfCombinationsFromFileContent(content):
     PARAMS_1 = ["x","a", "d"] # first parameter names
     PARAMS_2 = ["y", "b", "e"] # second parameter names. 
     PARAMS_3 = ["z", "c", "f"] # third parameter names. 
-    VARIABLE_1 = ["nthreads", "nthrds", "NUM_THREADS"] # variable for number of thread
+    VARIABLE_1 = ["nthreads", "nthrds", "NUM_THREADS"] # provariable for number of thread
     VARIABLE_2 = ["output", "result"] # returned variable
     VARIABLE_3 = ["s_priv"] # variable that holds the result computed by each thread
     VARIABLE_4 = ["size", "N", "SIZE"] # variable name for global array size
@@ -72,69 +73,62 @@ def getListOfCombinationsFromFileContent(content):
 
 def handleFiles(fileType):
     counter = 0
-    for i in range(1, 16):
-        fileName = f"{fileType}{i:02d}.txt"
-        
-        with open(f"Files\\{fileName}", "r") as file:
-            content = file.read()
-            
-            combinations, tokenDict = getListOfCombinationsFromFileContent(content)
+    for folder_name in os.listdir(fileType):
+        for text in os.listdir(os.path.join(fileType, folder_name)):
 
-            keyList = list(tokenDict.keys())
-            for combination in combinations:
-                copyContent = deepcopy(content)
-                for i in range(0, len(keyList)): # keyList and combination should be of same size.
-                    copyContent = copyContent.replace(str(keyList[i]), combination[i])
-                temp = fileName.replace(".txt", "")
-                with open(f"AugmentedData\\{temp}_augment{counter:03d}.txt", "w") as oFile:
-                    oFile.write(copyContent)
-                    counter += 1
+            fileName = fileType + folder_name + "/" + text
+
+            with open(fileName, "r") as file:
+
+                content = file.read()
+                
+                combinations, tokenDict = getListOfCombinationsFromFileContent(content)
+
+                keyList = list(tokenDict.keys())
+                for combination in combinations:
+                    copyContent = deepcopy(content)
+                    for i in range(0, len(keyList)): # keyList and combination should be of same size.
+                        copyContent = copyContent.replace(str(keyList[i]), combination[i])
+                    temp = text.replace(".txt", "")
+                    with open(f"AugmentedData/{folder_name}_{temp}_augment{counter:03d}.txt", "w") as oFile:
+                        oFile.write(copyContent)
+                        counter += 1
 
 def augmentData():
-    handleFiles(fileType="problem")
-    handleFiles(fileType="solution")
+    handleFiles(fileType="./OpenMP/")
+    #handleFiles(fileType="solution")
 
 
 def main():
-    FILE_PATH="AugmentedData\\"
+    FILE_PATH="AugmentedData/"
     problemCodes = []
     solutionCodes = []
     codeClasses=[]
-    # augmentData() # uncomment this line if you want to augment the data in Files directory
+    augmentData() # uncomment this line if you want to augment the data in Files directory
+
+    all_files = list(sorted(os.listdir(FILE_PATH)))
  
-    for _, _, files in os.walk(FILE_PATH):
-        problemCodes = ["" for _ in range(int(len(files) / 2))]
-        solutionCodes = ["" for _ in range(int(len(files) / 2))]
-        codeClasses = ["" for _ in range(int(len(files) / 2))]
+    for fileName in all_files:
+        
+        filePath = os.path.join(FILE_PATH, fileName)
 
-        for fileName in files:  # for each file in input file path
-            filePath = os.path.join(FILE_PATH, fileName)
-            fileNumber = int(fileName[-7:-4])
-            globalFileNumber = int(fileName.split("_")[0][-2:])
+        # filling problem and solution codes
+        code = ""
+        with open(filePath, "r") as file:
+            lines = file.readlines()
+            for line in lines:
+                code += line.strip() + "$<n>$"
 
-            # filling problem and solution codes
-            code = ""
-            with open(filePath, "r") as file:
-                lines = file.readlines()
-                for line in lines:
-                    code += line.strip() + "$<n>$"
-
-                if "solution" in fileName:
-                    solutionCodes[fileNumber-1] = code
-                
-                elif "problem" in fileName:
-                    problemCodes[fileNumber-1] = code
+            if "solution" in fileName:
+                solutionCodes.append(code)
             
-            # filling classes
-            if 1 <= globalFileNumber and globalFileNumber <= 10:
-                codeClasses[fileNumber-1] = "False Sharing"
-            else:
-                codeClasses[fileNumber-1] = "Loop Unrolling"
+            elif "problem" in fileName:
+                problemCodes.append(code)
 
-    generateJSONL(prompData=problemCodes, completionData=codeClasses, outputFileName="data01.jsonl")
-    generateJSONL(prompData=problemCodes, completionData=solutionCodes, outputFileName="data02.jsonl")
+        codeClasses.append(fileName.split("_")[0])
 
-
+    generateJSONL(prompData=problemCodes, completionData=codeClasses, outputFileName="data_classification.jsonl")
+    generateJSONL(prompData=problemCodes, completionData=solutionCodes, outputFileName="data_solution.jsonl")
 
 
 if __name__ == "__main__":

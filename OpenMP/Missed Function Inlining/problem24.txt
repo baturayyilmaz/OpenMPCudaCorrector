@@ -1,0 +1,29 @@
+#include <omp.h>
+#include <stdio.h>
+
+// A simple function that performs a calculation
+int performCalculation(int value) {
+    // Some expensive calculation
+    return value * value;
+}
+
+int <FUNC_NAME>() {
+    int <VAR_4> = 10;
+    int <VAR_2>[<VAR_4>];
+
+    #pragma omp parallel
+    {
+        #pragma omp for
+        for (int i = 0; i < <VAR_4>; i++) {
+            // Calling the function inside the parallel block
+            <VAR_2>[i] = performCalculation(i);
+        }
+    }
+
+    // Print the results
+    for (int i = 0; i < <VAR_4>; i++) {
+        printf("Result[%d]: %d\n", i, <VAR_2>[i]);
+    }
+
+    return 0;
+}

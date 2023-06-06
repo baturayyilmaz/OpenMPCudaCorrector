@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define <VAR_4> 1000
+
+void preprocessData(double* data) {
+    #pragma omp parallel for
+    for (int i = 0; i < <VAR_4>; i++) {
+        // Perform some computation on data[i]
+        data[i] = data[i] * 2.0;
+    }
+}
+
+int <FUNC_NAME>() {
+    // Initialize the data array
+    double data[<VAR_4>];
+
+    for (int i = 0; i < <VAR_4>; i++) {
+        data[i] = i + 1;
+    }
+
+    // Perform data pre-processing
+    preprocessData(data);
+
+    // Print the pre-processed data
+    for (int i = 0; i < <VAR_4>; i++) {
+        printf("%.2f ", data[i]);
+    }
+    printf("\n");
+
+    return 0;
+}

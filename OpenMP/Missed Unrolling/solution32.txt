@@ -1,0 +1,17 @@
+double <FUNC_NAME>(int <PARAM_1>[], int <PARAM_2>){
+	double <VAR_2> = 0;
+
+	for (int i = 0; i <= <VAR_4> - 4; i+=4 ){
+		<VAR_2> += <PARAM_1>[i] * <PARAM_2>;
+		<VAR_2> += <PARAM_1>[i+1] * <PARAM_2>;
+		<VAR_2> += <PARAM_1>[i+2] * <PARAM_2>;
+		<VAR_2> += <PARAM_1>[i+3] * <PARAM_2>;
+	}
+
+	int temp = <VAR_4> - (<VAR_4> % 4);	
+	for (int i=temp; i < <VAR_4>; i++){
+		<VAR_2> += <PARAM_1>[i] * <PARAM_2>;	
+	}
+	
+	return <VAR_2>;
+}

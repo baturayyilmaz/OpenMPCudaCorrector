@@ -1,4 +1,4 @@
-API KEY: "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"
+API KEY: "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"
 
 PREPARING JSONL COMMAND:
 "openai tools fine_tunes.prepare_data -f data02.jsonl"

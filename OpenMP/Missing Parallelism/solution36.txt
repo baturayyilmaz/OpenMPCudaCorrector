@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <omp.h>
+
+void task1() {
+    // Task 1: Printing a message
+    printf("Hello from Task 1!\n");
+}
+
+void task2() {
+    // Task 2: Squaring a number
+    int num = 5;
+    int result = num * num;
+    printf("Square of %d is %d\n", num, result);
+}
+
+void task3() {
+    // Task 3: Finding the sum of an array
+    int arr[] = {1, 2, 3, 4, 5};
+    int sum = 0;
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+    #pragma omp parallel for reduction(+:sum)
+    for (int i = 0; i < size; i++) {
+        sum += arr[i];
+    }
+
+    printf("Sum of array elements: %d\n", sum);
+}
+
+int <FUNC_NAME>() {
+    #pragma omp parallel
+    {
+        #pragma omp sections
+        {
+            #pragma omp section
+            {
+                // Task 1 executed concurrently
+                task1();
+            }
+
+            #pragma omp section
+            {
+                // Task 2 executed concurrently
+                task2();
+            }
+
+            #pragma omp section
+            {
+                // Task 3 executed concurrently
+                task3();
+            }
+        }
+    }
+
+    return 0;
+}

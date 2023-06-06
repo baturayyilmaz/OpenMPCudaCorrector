@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <omp.h>
+
+void processSmallProblemSize(int <VAR_4>) {
+    #pragma omp parallel num_threads(<VAR_4>)
+    {
+        int threadId = omp_get_thread_num();
+        printf("Thread %d is processing a small problem\n", threadId);
+        // Perform the small problem task
+    }
+}
+
+int <FUNC_NAME>() {
+    int <VAR_4> = 4;
+
+    // Process the small problem size
+    processSmallProblemSize(<VAR_4>);
+
+    return 0;
+}
