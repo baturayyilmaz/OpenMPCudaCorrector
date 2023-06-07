@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define SIZE 1000000
+
+void performHotLoopWithErrorChecking(int* data) {
+    int sum = 0;
+    int hasNegative = 0;
+
+    // Error checking before entering the hot loop
+    for (int i = 0; i < SIZE; i++) {
+        if (data[i] < 0) {
+            hasNegative = 1;
+            printf("Error: Negative value found at index %d\n", i);
+            break;
+        }
+    }
+
+    // Perform the hot loop only if no negative values are found
+    if (!hasNegative) {
+        #pragma omp parallel for reduction(+:sum)
+        for (int i = 0; i < SIZE; i++) {
+            sum += data[i];
+        }
+    }
+
+    printf("Sum of positive elements: %d\n", sum);
+}
+
+int main() {
+    int data[SIZE];
+
+    // Initialize the data array
+    for (int i = 0; i < SIZE; i++) {
+        data[i] = i;
+    }
+
+    // Perform the hot loop with error checking
+    performHotLoopWithErrorChecking(data);
+
+    return 0;
+}

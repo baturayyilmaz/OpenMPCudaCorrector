@@ -1,0 +1,10 @@
+double foo(int d[], int y[]){
+	double output = 0;
+	
+	for (int i = 0; i < SIZE; i++)
+	{	
+		output += d[i] * d[i] + y[i] * y[i];
+	}
+
+	return output;
+}

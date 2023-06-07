@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define SIZE 1000
+#define CACHE_LINE_SIZE 64
+
+void processStridedAccess(double* data, int stride) {
+    // Determine the number of elements in each cache line
+    int elementsPerCacheLine = CACHE_LINE_SIZE / sizeof(double);
+
+    #pragma omp parallel
+    {
+        #pragma omp for
+        for (int block = 0; block < SIZE / elementsPerCacheLine; block++) {
+            int start = block * elementsPerCacheLine * stride;
+            int end = start + elementsPerCacheLine * stride;
+
+            for (int i = start; i < end; i += stride) {
+                // Access data with a larger stride
+                data[i] = data[i] * 2.0;
+            }
+        }
+    }
+}
+
+int foo() {
+    // Initialize the data array
+    double data[SIZE];
+
+    for (int i = 0; i < SIZE; i++) {
+        data[i] = i + 1;
+    }
+
+    // Perform strided data processing
+    int stride = CACHE_LINE_SIZE / sizeof(double);  // Set the stride to cache line size
+    processStridedAccess(data, stride);
+
+    // Print the processed data
+    for (int i = 0; i < SIZE; i++) {
+        printf("%.2f ", data[i]);
+    }
+    printf("\n");
+
+    return 0;
+}

@@ -1,0 +1,24 @@
+#include <omp.h>
+#include <stdio.h>
+
+// A simple function that increments a value
+inline void incrementValue(int* value) {
+    (*value)++;
+}
+
+int foo() {
+    int counter = 0;
+    int numIterations = 10;
+
+    #pragma omp parallel for
+    for (int i = 0; i < numIterations; i++) {
+        // A critical loop where the function is called
+        #pragma omp critical
+        {
+            incrementValue(&counter);
+        }
+    }
+
+    printf("Counter: %d\n", counter);
+    return 0;
+}

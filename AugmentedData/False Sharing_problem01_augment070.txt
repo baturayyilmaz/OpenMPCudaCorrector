@@ -1,0 +1,22 @@
+double bar(int data[]){
+	int NUM_THREADS = 16;
+	double result = 0;
+	double s_priv[NUM_THREADS] = {0};
+
+	#pragma omp parallel num_threads(NUM_THREADS)
+	{
+		int t = omp_get_thread_num();
+		#pragma omp for
+		for (int i = 0; i < SIZE; i++){
+			s_priv[t] += data[i];
+		}	
+	}
+
+	for (int i = 0; i < NUM_THREADS; i++)
+	{
+		result += s_priv[i];
+	}
+
+	return result;
+}
+

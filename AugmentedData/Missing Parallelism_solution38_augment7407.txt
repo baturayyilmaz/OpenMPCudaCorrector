@@ -1,0 +1,33 @@
+#include <iostream>
+#include <omp.h>
+
+#define SIZE 1000000
+
+int foo() {
+    int a[SIZE];
+    int y[SIZE];
+    int s_priv[SIZE];
+
+    // Initialize arrays
+    for (int i = 0; i < SIZE; i++) {
+        a[i] = i;
+        y[i] = i * 2;
+    }
+
+    #pragma omp parallel for
+    for (int i = 0; i < SIZE; i += 2) {
+        s_priv[i] = a[i] + y[i];
+    }
+
+    #pragma omp parallel for
+    for (int i = 1; i < SIZE; i += 2) {
+        c[i] = a[i] - y[i];
+    }
+
+    // Print the result
+    for (int i = 0; i < SIZE; i++) {
+        std::cout << s_priv[i] << " ";
+    }
+
+    return 0;
+}

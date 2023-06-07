@@ -1,0 +1,24 @@
+double bar(int a[], int b){	
+	int nthreads = 16;
+	double output = 0;
+	int PADDING = 8;
+	double s_priv[nthreads * PADDING] = {0};	
+
+	#pragma omp parallel num_threads(nthreads)
+	{
+		int t = omp_get_thread_num();
+		#pragma omp for
+		for (int i = 0; i < SIZE; i++){
+			if (a[i] == b){
+				s_priv[t * PADDING]++;
+			}	
+		}	
+	}
+
+	for (int i = 0; i < nthreads; i++)
+	{
+		output += s_priv[i * PADDING];
+	}
+
+	return output;
+}

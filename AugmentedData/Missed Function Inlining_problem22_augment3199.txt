@@ -1,0 +1,35 @@
+#include <iostream>
+#include <omp.h>
+#include <cmath>
+
+int calculateDifference(int value, int mean) {
+    return pow(value - mean, 2);
+}
+
+int bar() {
+
+    int d[SIZE];
+    int sum=0;
+    int diff=0;
+
+    #pragma omp parallel for
+    for(int i=0; i<SIZE; i++){
+        d[i] = rand() % 100;
+    }
+
+    #pragma omp parallel for reduction(+:diff)
+    for(int i=0; i<SIZE; i++){
+        sum += d[i];
+    }
+
+    double mean = sum / (double)SIZE;
+
+    #pragma omp parallel for reduction(+:diff)
+    for (int i = 0; i < SIZE; i++) {
+        diff += calculateDifference(d[i], mean);
+    }
+
+    std::cout << "Variance : " << diff / (double)SIZE - 1 << std::endl;
+
+    return 0;
+}

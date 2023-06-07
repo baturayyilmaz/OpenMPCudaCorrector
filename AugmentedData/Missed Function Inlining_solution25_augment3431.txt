@@ -1,0 +1,25 @@
+#include <omp.h>
+#include <stdio.h>
+
+// A simple inline function that performs a mathematical operation
+inline int multiply(int a, int b) {
+    return a * b;
+}
+
+int main() {
+    int size = 10;
+    int result[size];
+
+    #pragma omp parallel for
+    for (int i = 0; i < size; i++) {
+        // Calling the inline function multiple times
+        result[i] = multiply(i, i + 1);
+    }
+
+    // Print the results
+    for (int i = 0; i < size; i++) {
+        printf("Result[%d]: %d\n", i, result[i]);
+    }
+
+    return 0;
+}

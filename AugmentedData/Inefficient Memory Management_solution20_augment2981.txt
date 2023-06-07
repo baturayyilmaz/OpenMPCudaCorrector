@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>
+
+#define N 1000000
+
+int main() {
+    int* a = (int*) malloc(N * sizeof(int));
+    int* y = (int*) malloc(N * sizeof(int));
+
+    // Initialize the array
+    for (int i = 0; i < N; i++) {
+        a[i] = i;
+    }
+
+    #pragma omp parallel
+    {
+        #pragma omp for
+        for (int i = 0; i < N; i++) {
+            // Perform some computation on the array
+            y[i] = a[i] * 2;
+        }
+
+        #pragma omp for
+        for (int i = 0; i < N; i++) {
+            // Update the original array with the computed values
+            a[i] = y[i];
+        }
+    }
+
+    free(y);
+    free(a);
+
+    return 0;
+}

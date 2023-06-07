@@ -1,0 +1,10 @@
+double bar(int x[], int e[]){
+	double result = 0;
+	
+	for (int i = 0; i < size; i++)
+	{	
+		result += x[i] * x[i] + e[i] * e[i];
+	}
+
+	return result;
+}

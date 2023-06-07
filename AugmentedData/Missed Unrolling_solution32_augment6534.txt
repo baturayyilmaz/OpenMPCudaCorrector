@@ -1,0 +1,17 @@
+double foo(int x[], int e){
+	double result = 0;
+
+	for (int i = 0; i <= N - 4; i+=4 ){
+		result += x[i] * e;
+		result += x[i+1] * e;
+		result += x[i+2] * e;
+		result += x[i+3] * e;
+	}
+
+	int temp = N - (N % 4);	
+	for (int i=temp; i < N; i++){
+		result += x[i] * e;	
+	}
+	
+	return result;
+}

@@ -1,0 +1,25 @@
+#include <omp.h>
+#include <iostream>
+
+const int N = 1000000;
+const int NUM_THREADS = 4;
+const int PADDING = 64;
+
+int bar() {
+    int data[N][PADDING];
+    int i;
+
+    #pragma omp parallel num_threads(NUM_THREADS)
+    {
+	int id = omp_get_thread_num();
+	for (i = id; i < N; i += NUM_THREADS) {
+	    // Now each thread is writing to a different cache line
+	    data[i][0] += 1;
+	}
+
+    }
+
+    std::cout << "Final value of data[0][0]: " << data[0][0] << std::endl;
+
+    return 0;
+}

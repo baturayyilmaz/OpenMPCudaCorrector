@@ -5,7 +5,7 @@ const int <VAR_4> = 1000000;
 const int <VAR_1> = 4;
 const int <VAR_PAD> = 64;
 
-int main() {
+int <FUNC_NAME>() {
     int data[<VAR_4>][<VAR_PAD>];
     int i;
 

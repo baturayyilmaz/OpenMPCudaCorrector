@@ -1,0 +1,36 @@
+#include <omp.h>
+#include <stdio.h>
+
+int multiplyAndCache(int a, int b) {
+    static int cachedResult = -1;
+    static int cachedInput = -1;
+
+    if (a == cachedInput) {
+        // If the input is the same as the cached input, return the cached result
+        return cachedResult;
+    } else {
+        // Perform the calculation and cache the result
+        int result = a * b;
+        cachedInput = a;
+        cachedResult = result;
+        return result;
+    }
+}
+
+int foo() {
+    int N = 10;
+    int output[N];
+
+    #pragma omp parallel for
+    for (int i = 0; i < N; i++) {
+        // Calling the inline function multiple times with the same input
+        output[i] = multiplyAndCache(5, i + 1);
+    }
+
+    // Print the results
+    for (int i = 0; i < N; i++) {
+        printf("Result[%d]: %d\n", i, output[i]);
+    }
+
+    return 0;
+}

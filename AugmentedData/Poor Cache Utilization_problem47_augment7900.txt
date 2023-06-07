@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>
+
+#define SIZE 1000
+
+void processNonSequential(double* data) {
+    #pragma omp parallel for
+    for (int i = 0; i < SIZE; i++) {
+        // Access data in a non-sequential manner
+        int index = rand() % SIZE;
+        data[index] = data[index] * 2.0;
+    }
+}
+
+int bar() {
+    // Initialize the data array
+    double data[SIZE];
+
+    for (int i = 0; i < SIZE; i++) {
+        data[i] = i + 1;
+    }
+
+    // Perform non-sequential data processing
+    processNonSequential(data);
+
+    // Print the processed data
+    for (int i = 0; i < SIZE; i++) {
+        printf("%.2f ", data[i]);
+    }
+    printf("\n");
+
+    return 0;
+}

@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define size 1000000
+
+int main() {
+    int i;
+    int array[size];
+    int sum = 0;
+
+    // Initialize the array
+    for (i = 0; i < size; i++) {
+        array[i] = i + 1;
+    }
+
+    #pragma omp parallel
+    {
+        int local_sum = 0;
+
+        #pragma omp for
+        for (i = 0; i < size; i++) {
+            local_sum += array[i];
+        }
+
+        #pragma omp critical
+        {
+            sum += local_sum;
+        }
+    }
+
+    printf("Sum: %d\n", sum);
+
+    return 0;
+}

@@ -1,0 +1,33 @@
+#include <iostream>
+#include <omp.h>
+
+#define N 1000000
+
+int main() {
+    int a[N];
+    int b[N];
+    int s_priv[N];
+
+    // Initialize arrays
+    for (int i = 0; i < N; i++) {
+        a[i] = i;
+        b[i] = i * 2;
+    }
+
+    #pragma omp parallel for
+    for (int i = 0; i < N; i += 2) {
+        s_priv[i] = a[i] + b[i];
+    }
+
+    #pragma omp parallel for
+    for (int i = 1; i < N; i += 2) {
+        c[i] = a[i] - b[i];
+    }
+
+    // Print the result
+    for (int i = 0; i < N; i++) {
+        std::cout << s_priv[i] << " ";
+    }
+
+    return 0;
+}

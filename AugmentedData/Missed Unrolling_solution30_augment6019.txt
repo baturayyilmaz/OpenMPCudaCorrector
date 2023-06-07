@@ -1,0 +1,17 @@
+double bar(int x[], int e[]){
+	double output = 0;
+
+	for (int i = 0; i <= N - 4; i+=4 ){
+		output += x[i] * x[i] + e[i] * e[i];
+		output += x[i+1] * x[i+1] + e[i+1] * e[i+1];
+		output += x[i+2] * x[i+2] + e[i+2] * e[i+2];
+		output += x[i+3] * x[i+3] + e[i+3] * e[i+3];
+	}
+
+	int temp = N - (N % 4);	
+	for (int i=temp; i < N; i++){
+		output += x[i] * x[i] + arr2[i] * arr2[i];	
+	}
+	
+	return output;
+}

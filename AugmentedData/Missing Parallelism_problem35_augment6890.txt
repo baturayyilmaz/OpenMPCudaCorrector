@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>
+
+#define NUM_THREADS 4
+#define SIZE 10
+
+int main() {
+
+    // Set the number of threads
+    omp_set_num_threads(NUM_THREADS);
+
+    // Perform some random number generation
+    #pragma omp parallel
+    {
+        int threadId = omp_get_thread_num();
+
+        for (int i = 0; i < SIZE; i++) {
+            int randomNumber = rand();
+            printf("Thread %d - Random number: %d\n", threadId, randomNumber);
+        }
+    }
+
+    return 0;
+}

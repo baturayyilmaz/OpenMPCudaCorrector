@@ -1,0 +1,10 @@
+double foo(int x[]){
+	double output = 0;
+	
+	for (int i = 0; i < SIZE; i++)
+	{	
+		output += x[i];
+	}
+
+	return output;
+}

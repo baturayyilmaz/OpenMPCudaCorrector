@@ -1,0 +1,17 @@
+double bar(int a[], int y){
+	double result = 0;
+
+	for (int i = 0; i <= SIZE - 4; i+=4 ){
+		result += a[i] * y;
+		result += a[i+1] * y;
+		result += a[i+2] * y;
+		result += a[i+3] * y;
+	}
+
+	int temp = SIZE - (SIZE % 4);	
+	for (int i=temp; i < SIZE; i++){
+		result += a[i] * y;	
+	}
+	
+	return result;
+}

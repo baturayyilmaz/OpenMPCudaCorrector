@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define SIZE 100
+
+void processLoopWithConditional(int* data) {
+    int sum = 0;
+
+    #pragma omp parallel for reduction(+:sum)
+    for (int i = 0; i < SIZE; i++) {
+        #pragma omp critical
+        {
+            // Conditional statement inside the critical loop
+            if (data[i] > 0) {
+                sum += data[i];
+            }
+        }
+    }
+
+    printf("Sum of positive elements: %d\n", sum);
+}
+
+int main() {
+    int data[SIZE];
+
+    // Initialize the data array
+    for (int i = 0; i < SIZE; i++) {
+        data[i] = i - 50;
+    }
+
+    // Process the loop with conditional statement
+    processLoopWithConditional(data);
+
+    return 0;
+}

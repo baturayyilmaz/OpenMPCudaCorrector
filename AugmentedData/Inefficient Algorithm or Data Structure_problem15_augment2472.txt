@@ -1,0 +1,60 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>
+
+#define size 100000
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+typedef struct Node Node;
+
+Node* createNode(int data) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = data;
+    newNode->next = NULL;
+    return newNode;
+}
+
+Node* appendNode(Node* head, int data) {
+    Node* newNode = createNode(data);
+    if (head == NULL) {
+        return newNode;
+    } else {
+        Node* current = head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newNode;
+        return head;
+    }
+}
+
+int accessElement(Node* head, int index) {
+    Node* current = head;
+    for (int i = 0; i < index; i++) {
+        current = current->next;
+    }
+    return current->data;
+}
+
+int foo() {
+    Node* head = NULL;
+
+    // Populate the linked list
+    for (int i = 0; i < size; i++) {
+        head = appendNode(head, i);
+    }
+
+    // Access elements randomly
+    #pragma omp parallel for
+    for (int i = 0; i < size; i++) {
+        int index = rand() % size;
+        int data = accessElement(head, index);
+        printf("Thread %d: Accessed element at index %d with value %d\n", omp_get_thread_num(), index, data);
+    }
+
+    return 0;
+}

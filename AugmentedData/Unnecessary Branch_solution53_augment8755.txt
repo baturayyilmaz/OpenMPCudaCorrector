@@ -1,0 +1,33 @@
+#include <iostream>
+#include <omp.h>
+
+int bar() {
+
+    int x[size];
+    int c = 0;
+    int <PARAM_3> = 0;
+
+    //Initialize array
+    #pragma omp parallel for
+    for(int i=0; i<size; i++)
+    {
+        x[i] = i;
+    } 
+
+    #pragma omp parallel for
+    for(int i=0; i<size; i+=2)
+    {
+        c += x[i];
+    }
+
+    #pragma omp parallel for
+    for(int i=1; i<size; i+=2)
+    {
+        <PARAM_3> += x[i];
+    }
+
+    printf("Sum of even numbers: %d", c);
+    printf("Sum of odd numbers: %d", <PARAM_3>);
+
+    return 0;
+}

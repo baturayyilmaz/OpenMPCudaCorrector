@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define NUM_THREADS 4
+#define SIZE 10
+
+void performTask(int taskId) {
+    // Perform the task
+    printf("Thread %d: Performing task %d\n", omp_get_thread_num(), taskId);
+}
+
+void synchronizeThreads() {
+    #pragma omp barrier
+}
+
+int foo() {
+    omp_set_num_threads(NUM_THREADS);
+
+    #pragma omp parallel
+    {
+        for (int i = 0; i < SIZE; i++) {
+            performTask(i);
+
+            synchronizeThreads();
+        }
+    }
+
+    return 0;
+}

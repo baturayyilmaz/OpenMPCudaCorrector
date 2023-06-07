@@ -1,0 +1,29 @@
+#include <omp.h>
+#include <stdio.h>
+
+// A simple function that performs a calculation
+inline int performCalculation(int value) {
+    // Some expensive calculation
+    return value * value;
+}
+
+int bar() {
+    int size = 10;
+    int result[size];
+
+    #pragma omp parallel
+    {
+        #pragma omp for
+        for (int i = 0; i < size; i++) {
+            // Calling the function inside the parallel block
+            result[i] = performCalculation(i);
+        }
+    }
+
+    // Print the results
+    for (int i = 0; i < size; i++) {
+        printf("Result[%d]: %d\n", i, result[i]);
+    }
+
+    return 0;
+}

@@ -1,0 +1,10 @@
+double bar(int d[], int y){
+	double output = 0;
+	
+	for (int i = 0; i < size; i++)
+	{	
+		output += d[i] * y;
+	}
+
+	return output;
+}

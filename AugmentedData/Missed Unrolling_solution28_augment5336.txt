@@ -1,0 +1,17 @@
+double main(int x[], int e[]){
+	double output = 0;
+
+	for (int i = 0; i <= SIZE - 4; i+=4 ){
+		output += x[i] + e[i];
+		output += x[i+1] + e[i+1];
+		output += x[i+2] + e[i+2];
+		output += x[i+3] + e[i+3];
+	}
+
+	int temp = SIZE - (SIZE % 4);	
+	for (int i=temp; i < SIZE; i++){
+		output += x[i] + e[i];	
+	}
+	
+	return output;
+}

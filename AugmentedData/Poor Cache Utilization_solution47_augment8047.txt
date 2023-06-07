@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>
+
+#define size 1000
+
+void processNonSequential(double* data) {
+    // Create a temporary array for reordered data
+    double temp[size];
+
+    #pragma omp parallel
+    {
+        // Each thread generates a random permutation of indices
+        unsigned int seed = omp_get_thread_num();
+        int* indices = (int*)malloc(size * sizeof(int));
+
+        for (int i = 0; i < size; i++) {
+            indices[i] = i;
+        }
+
+        // Shuffle the indices using Fisher-Yates algorithm
+        for (int i = size - 1; i > 0; i--) {
+            int j = rand_r(&seed) % (i + 1);
+            int temp = indices[i];
+            indices[i] = indices[j];
+            indices[j] = temp;
+        }
+
+        // Each thread processes its assigned portion of data
+        #pragma omp for
+        for (int i = 0; i < size; i++) {
+            int index = indices[i];
+            temp[index] = data[index] * 2.0;
+        }
+
+        free(indices);
+    }
+
+    // Copy the reordered data back to the original array
+    for (int i = 0; i < size; i++) {
+        data[i] = temp[i];
+    }
+}
+
+int bar() {
+    // Initialize the data array
+    double data[size];
+
+    for (int i = 0; i < size; i++) {
+        data[i] = i + 1;
+    }
+
+    // Perform non-sequential data processing
+    processNonSequential(data);
+
+    // Print the processed data
+    for (int i = 0; i < size; i++) {
+        printf("%.2f ", data[i]);
+    }
+    printf("\n");
+
+    return 0;
+}

@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define nthrds 4
+
+int shared_variable = 0;
+
+void increment_variable() {
+    for (int i = 0; i < 1000000; i++) {
+        #pragma omp critical
+        {
+            shared_variable++;
+        }
+    }
+}
+
+int bar() {
+    omp_set_num_threads(nthrds);
+    
+    #pragma omp parallel
+    {
+        increment_variable();
+    }
+
+    printf("Shared variable value: %d\n", shared_variable);
+    
+    return 0;
+}

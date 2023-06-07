@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>
+
+#define N 100000
+
+int foo() {
+    int* a = (int*)malloc(N * sizeof(int));
+
+    // Populate the array
+    for (int i = 0; i < N; i++) {
+        a[i] = i;
+    }
+
+    // Access elements randomly
+    #pragma omp parallel for
+    for (int i = 0; i < N; i++) {
+        int index = rand() % N;
+        int data = a[index];
+        printf("Thread %d: Accessed element at index %d with value %d\n", omp_get_thread_num(), index, data);
+    }
+
+    free(a);
+
+    return 0;
+}

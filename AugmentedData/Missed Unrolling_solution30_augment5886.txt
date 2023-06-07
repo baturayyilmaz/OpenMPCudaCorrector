@@ -1,0 +1,17 @@
+double foo(int x[], int y[]){
+	double output = 0;
+
+	for (int i = 0; i <= size - 4; i+=4 ){
+		output += x[i] * x[i] + y[i] * y[i];
+		output += x[i+1] * x[i+1] + y[i+1] * y[i+1];
+		output += x[i+2] * x[i+2] + y[i+2] * y[i+2];
+		output += x[i+3] * x[i+3] + y[i+3] * y[i+3];
+	}
+
+	int temp = size - (size % 4);	
+	for (int i=temp; i < size; i++){
+		output += x[i] * x[i] + arr2[i] * arr2[i];	
+	}
+	
+	return output;
+}

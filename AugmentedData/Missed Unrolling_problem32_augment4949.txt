@@ -1,0 +1,10 @@
+double main(int d[], int b){
+	double output = 0;
+	
+	for (int i = 0; i < SIZE; i++)
+	{	
+		output += d[i] * b;
+	}
+
+	return output;
+}

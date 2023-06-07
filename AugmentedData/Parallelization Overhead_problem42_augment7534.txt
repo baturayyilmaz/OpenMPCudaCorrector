@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define NUM_THREADS 4
+#define size 100000
+
+int sharedResource = 0;
+omp_lock_t lock;
+
+void updateSharedResource(int threadId) {
+    // Acquire the lock
+    omp_set_lock(&lock);
+
+    // Perform some computation on the shared resource
+    sharedResource += threadId;
+
+    // Release the lock
+    omp_unset_lock(&lock);
+}
+
+int bar() {
+    omp_set_num_threads(NUM_THREADS);
+
+    // Initialize the lock
+    omp_init_lock(&lock);
+
+    #pragma omp parallel
+    {
+        int threadId = omp_get_thread_num();
+
+        for (int i = 0; i < size; i++) {
+            updateSharedResource(threadId);
+        }
+    }
+
+    // Destroy the lock
+    omp_destroy_lock(&lock);
+
+    printf("Final value of shared resource: %d\n", sharedResource);
+
+    return 0;
+}

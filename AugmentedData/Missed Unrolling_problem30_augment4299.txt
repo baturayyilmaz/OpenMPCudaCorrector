@@ -1,0 +1,10 @@
+double foo(int d[], int e[]){
+	double output = 0;
+	
+	for (int i = 0; i < size; i++)
+	{	
+		output += d[i] * d[i] + e[i] * e[i];
+	}
+
+	return output;
+}

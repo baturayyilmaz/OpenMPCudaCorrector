@@ -1,0 +1,10 @@
+double main(int x[], int b[]){
+	double output = 0;
+	
+	for (int i = 0; i < SIZE; i++)
+	{	
+		output += x[i] * x[i] + b[i] * b[i];
+	}
+
+	return output;
+}

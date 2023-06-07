@@ -1,0 +1,39 @@
+#include <cstdio>
+#include <iostream>
+#include <omp.h>
+
+int size = 10000000;
+const int PADDING = 16;
+
+int foo()
+{
+
+  double start_time = omp_get_wtime();
+
+  double a[size + PADDING],  b[size + PADDING], output[size + PADDING];
+
+#pragma omp parallel
+{
+
+#pragma omp for
+  for(int i=0;i<size;i++){
+    a[i] = 10;
+  }
+
+#pragma omp for
+  for(int i=0;i<size;i++){
+    b[i] = 10;
+  }
+
+#pragma omp for
+  for(int i=0;i<size;i++){
+    output[i] = a[i] + b[i];
+  }
+
+}	
+  double end_time = omp_get_wtime();
+
+  printf("Elapsed time: %f", end_time - start_time);
+
+  return 0;
+}

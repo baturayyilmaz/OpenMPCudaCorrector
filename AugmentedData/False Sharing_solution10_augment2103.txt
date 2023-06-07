@@ -1,0 +1,24 @@
+double foo(int a[], int b){	
+	int nthrds = 16;
+	double output = 0;
+	int PADDING = 8;
+	double s_priv[nthrds * PADDING] = {0};	
+
+	#pragma omp parallel num_threads(nthrds)
+	{
+		int t = omp_get_thread_num();
+		#pragma omp for
+		for (int i = 0; i < size; i++){
+			if (a[i] == b){
+				s_priv[t * PADDING]++;
+			}	
+		}	
+	}
+
+	for (int i = 0; i < nthrds; i++)
+	{
+		output += s_priv[i * PADDING];
+	}
+
+	return output;
+}

@@ -1,0 +1,23 @@
+#include <iostream>
+#include <chrono>
+#include <omp.h>
+
+using namespace std;
+
+const int N = 100000000;
+
+int bar() {
+    int* x = new int[N];
+    auto start = chrono::high_resolution_clock::now();
+    
+    #pragma omp parallel for schedule(dynamic)
+    for (int i = 0; i < N; i++) {
+        x[i] = i;
+    }
+
+    auto end = chrono::high_resolution_clock::now();
+    cout << "Time taken: " << chrono::duration_cast<chrono::milliseconds>(end - start).count() << " ms\n";
+    
+    delete[] x;
+    return 0;
+}

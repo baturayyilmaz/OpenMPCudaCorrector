@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define size 1000000
+
+void processLoopWithSpecialCases(int* data) {
+    int sum = 0;
+    int specialSum = 0;
+
+    #pragma omp parallel for reduction(+:sum, specialSum)
+    for (int i = 0; i < size; i++) {
+        // Check for a special case inside the loop
+        if (data[i] == 0) {
+            specialSum += data[i];
+        } else {
+            sum += data[i];
+        }
+    }
+
+    printf("Sum of non-zero elements: %d\n", sum);
+    printf("Sum of special case elements: %d\n", specialSum);
+}
+
+int foo() {
+    int data[size];
+
+    // Initialize the data array
+    for (int i = 0; i < size; i++) {
+        data[i] = i - 500000;
+    }
+
+    // Process the loop with special cases
+    processLoopWithSpecialCases(data);
+
+    return 0;
+}

@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define nthreads 4
+
+int shared_variable = 0;
+
+void increment_variable() {
+    int local_count = 0;
+
+    for (int i = 0; i < 1000000; i++) {
+        local_count++;
+    }
+
+    #pragma omp atomic
+    shared_variable += local_count;
+}
+
+int main() {
+    omp_set_num_threads(nthreads);
+    
+    #pragma omp parallel
+    {
+        increment_variable();
+    }
+
+    printf("Shared variable value: %d\n", shared_variable);
+    
+    return 0;
+}

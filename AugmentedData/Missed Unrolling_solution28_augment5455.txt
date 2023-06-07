@@ -1,0 +1,17 @@
+double bar(int x[], int y[]){
+	double result = 0;
+
+	for (int i = 0; i <= SIZE - 4; i+=4 ){
+		result += x[i] + y[i];
+		result += x[i+1] + y[i+1];
+		result += x[i+2] + y[i+2];
+		result += x[i+3] + y[i+3];
+	}
+
+	int temp = SIZE - (SIZE % 4);	
+	for (int i=temp; i < SIZE; i++){
+		result += x[i] + y[i];	
+	}
+	
+	return result;
+}

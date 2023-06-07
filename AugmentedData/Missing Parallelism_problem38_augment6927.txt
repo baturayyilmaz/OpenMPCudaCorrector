@@ -1,0 +1,32 @@
+#include <iostream>
+#include <omp.h>
+
+#define size 1000000
+
+int foo() {
+    int d[size];
+    int b[size];
+    int s_priv[size];
+
+    // Initialize arrays
+    for (int i = 0; i < size; i++) {
+        d[i] = i;
+        b[i] = i * 2;
+    }
+
+    #pragma omp parallel for
+    for (int i = 0; i < size; i += 2) {
+        s_priv[i] = d[i] + b[i];
+    }
+
+    for (int i = 1; i < size; i += 2) {
+        c[i] = d[i] - b[i];
+    }
+
+    // Print the result
+    for (int i = 0; i < size; i++) {
+        std::cout << s_priv[i] << " ";
+    }
+
+    return 0;
+}

@@ -2,25 +2,25 @@
 #include <stdlib.h>
 #include <omp.h>
 
-#define NUM_ELEMENTS 100000
+#define <VAR_4> 100000
 
 int <FUNC_NAME>() {
-    int* <PARAM_1> = (int*)malloc(NUM_ELEMENTS * sizeof(int));
+    int* a = (int*)malloc(<VAR_4> * sizeof(int));
 
     // Populate the array
-    for (int i = 0; i < NUM_ELEMENTS; i++) {
-        <PARAM_1>[i] = i;
+    for (int i = 0; i < <VAR_4>; i++) {
+        a[i] = i;
     }
 
     // Access elements randomly
     #pragma omp parallel for
-    for (int i = 0; i < NUM_ELEMENTS; i++) {
-        int index = rand() % NUM_ELEMENTS;
-        int data = <PARAM_1>[index];
+    for (int i = 0; i < <VAR_4>; i++) {
+        int index = rand() % <VAR_4>;
+        int data = a[index];
         printf("Thread %d: Accessed element at index %d with value %d\n", omp_get_thread_num(), index, data);
     }
 
-    free(<PARAM_1>);
+    free(a);
 
     return 0;
 }

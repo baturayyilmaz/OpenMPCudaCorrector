@@ -1,0 +1,30 @@
+#include <iostream>
+#include <omp.h>
+
+#define N 1000000
+
+int main() {
+    int x[N];
+    int z[N];
+    int <PARAM_3>[N];
+
+    // Initialize arrays
+    #pragma omp parallel for
+    for (int i = 0; i < N; i++) {
+        x[i] = i;
+        z[i] = i * 2;
+    }
+
+    #pragma omp parallel for
+    for (int i = 0; i < N; i++) {
+        <PARAM_3>[i] = x[i] + z[i];
+    }
+
+    // Print the result
+    #pragma omp parallel for
+    for (int i = 0; i < N; i++) {
+        std::cout << <PARAM_3>[i] << " ";
+    }
+
+    return 0;
+}

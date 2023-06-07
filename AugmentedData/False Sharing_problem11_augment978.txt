@@ -1,0 +1,24 @@
+#include <omp.h>
+#include <iostream>
+
+const int N = 1000000;
+const int NUM_THREADS = 4;
+
+int foo() {
+    int data[N];
+    int i;
+
+    #pragma omp parallel num_threads(NUM_THREADS)
+    {
+        int id = omp_get_thread_num();
+
+        for (i = id; i < N; i += NUM_THREADS) {
+            // The following line is the cause of false sharing
+            data[i] += 1;
+        }
+    }
+
+    std::cout << "Final value of data[0]: " << data[0] << std::endl;
+
+    return 0;
+}

@@ -1,4 +1,4 @@
-int <FUNC_NAME>(int <PARAM_1>[]){	
+int <FUNC_NAME>(int a[]){	
 	int <VAR_1> = 16;	
 	int <VAR_2> = 0;
 	int <VAR_PAD> = 8;
@@ -10,9 +10,9 @@ int <FUNC_NAME>(int <PARAM_1>[]){
 		int maxVal = -1;
 		#pragma omp for
 		for (int i = 0; i < <VAR_4>; i++){	
-			if (<PARAM_1>[i] > maxVal){
-				maxVal = <PARAM_1>[i];
-				<VAR_3>[t * <VAR_PAD>] = <PARAM_1>[i];
+			if (a[i] > maxVal){
+				maxVal = a[i];
+				<VAR_3>[t * <VAR_PAD>] = a[i];
 			}
 		}
 	}

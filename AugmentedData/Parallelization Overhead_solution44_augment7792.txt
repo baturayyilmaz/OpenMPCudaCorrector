@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define NUM_THREADS 4
+#define SIZE 100000
+
+int sharedResource = 0;
+
+void updateSharedResource(int threadId) {
+    int privateResource = 0;
+
+    // Perform some computation on the private resource
+    privateResource += threadId;
+
+    // Accumulate the private resource into the shared resource atomically
+    #pragma omp atomic
+    sharedResource += privateResource;
+}
+
+int bar() {
+    omp_set_num_threads(NUM_THREADS);
+
+    #pragma omp parallel
+    {
+        int threadId = omp_get_thread_num();
+
+        for (int i = 0; i < SIZE; i++) {
+            updateSharedResource(threadId);
+        }
+    }
+
+    printf("Final value of shared resource: %d\n", sharedResource);
+
+    return 0;
+}

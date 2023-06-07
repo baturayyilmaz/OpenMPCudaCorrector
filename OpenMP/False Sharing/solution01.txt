@@ -1,4 +1,4 @@
-double <FUNC_NAME>(int <PARAM_1>[]){	
+double <FUNC_NAME>(int data[]){	
 	int <VAR_1> = 16;
 	double <VAR_2> = 0;
 	int <VAR_PAD> = 8;
@@ -9,7 +9,7 @@ double <FUNC_NAME>(int <PARAM_1>[]){
 		int t = omp_get_thread_num();
 		#pragma omp for
 		for (int i = 0; i < <VAR_4>; i++){
-			<VAR_3>[t * <VAR_PAD>] += <PARAM_1>[i];
+			<VAR_3>[t * <VAR_PAD>] += data[i];
 		}	
 	}
 

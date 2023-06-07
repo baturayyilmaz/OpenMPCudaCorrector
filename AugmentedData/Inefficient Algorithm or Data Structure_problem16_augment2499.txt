@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>
+
+#define N 100000
+
+void insertElement(int* array, int index, int element) {
+    for (int i = N - 1; i > index; i--) {
+        array[i] = array[i - 1];
+    }
+    array[index] = element;
+}
+
+void deleteElement(int* array, int index) {
+    for (int i = index; i < N - 1; i++) {
+        array[i] = array[i + 1];
+    }
+    array[N - 1] = 0;  // Reset the last element
+}
+
+int foo() {
+    int* a = (int*)malloc(N * sizeof(int));
+
+    // Initialize the array
+    for (int i = 0; i < ARRAY_SIZE; i++) {
+        a[i] = i;
+    }
+
+    int insertIndex = N / 2;  // Insert at the middle
+    int deleteIndex = N / 4;  // Delete from the quarter
+
+    // Insert an element
+    insertElement(a, insertIndex, -1);
+
+    // Delete an element
+    deleteElement(a, deleteIndex);
+
+    // Print the array
+    for (int i = 0; i < N; i++) {
+        printf("%d ", a[i]);
+    }
+    printf("\n");
+
+    free(a);
+
+    return 0;
+}

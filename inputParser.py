@@ -5,6 +5,7 @@ def generateJSONL(prompData, completionData, outputFileName):
 
     FILE_PATH="jsonlFiles\\"
     outputFilePath = os.path.join(FILE_PATH, outputFileName)
+    line = ""
     
     with open(outputFilePath, "w") as file:
 
@@ -17,8 +18,9 @@ def generateJSONL(prompData, completionData, outputFileName):
             endingToken = "##" # last line of solution04.txt is important for this otherwise this separator becomes too long
             # completion suffix = "$<n>$ ##"
 
-            line = f"{{\"prompt\":\"{prompt} {seperator}\", \"completion\":\"{completion} {endingToken}\"}}\n"
-            file.write(line)
+            line += f"{{\"prompt\":\"{prompt} {seperator}\", \"completion\":\"{completion} {endingToken}\"}},"
+        
+        file.write(line)
 
 
 def getListOfCombinationsFromFileContent(content):
@@ -30,7 +32,7 @@ def getListOfCombinationsFromFileContent(content):
     VARIABLE_2 = ["output", "result"] # returned variable
     VARIABLE_3 = ["s_priv"] # variable that holds the result computed by each thread
     VARIABLE_4 = ["size", "N", "SIZE"] # variable name for global array size
-    VARIABLE_PAD = ["PAD", "PADDING"] # variable used for padding the array for fixing the false sharing
+    VARIABLE_PAD = ["PADDING"] # variable used for padding the array for fixing the false sharing
     # <VAR_PAD> is only in solution files. 
     # So, if it has more than one value, there will be more than 1 solution fo each problem.
 
@@ -124,12 +126,14 @@ def main():
             
             elif "problem" in fileName:
                 problemCodes.append(code)
+                codeClasses.append(fileName.split("_")[0])
 
-        codeClasses.append(fileName.split("_")[0])
+    print(len(problemCodes))
+    print(len(codeClasses))
+    print(len(solutionCodes))
 
     generateJSONL(prompData=problemCodes, completionData=codeClasses, outputFileName="data_classification.jsonl")
     generateJSONL(prompData=problemCodes, completionData=solutionCodes, outputFileName="data_solution.jsonl")
-
 
 if __name__ == "__main__":
     main()

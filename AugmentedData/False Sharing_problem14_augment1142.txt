@@ -1,0 +1,47 @@
+#include <iostream>
+#include <omp.h>
+
+const int SIZE = 10000;
+const int nthreads = 4;
+
+int main() {
+    int d[SIZE];
+    int y[SIZE];
+
+    // Initialize data arrays
+    for (int i = 0; i < SIZE; i++) {
+        d[i] = i;
+        y[i] = i;
+    }
+
+    // Parallelize array update using OpenMP
+    #pragma omp parallel num_threads(nthreads)
+    {
+        int thread_id = omp_get_thread_num();
+
+        // Divide array into equal parts for each thread
+        int chunk_size = SIZE / nthreads;
+        int start_index = thread_id * chunk_size;
+        int end_index = start_index + chunk_size;
+
+        // Update each thread's portion of the arrays
+        for (int i = start_index; i < end_index; i++) {
+            // Access variables located on different cache lines
+            d[i] += thread_id;
+            y[i] += thread_id;
+        }
+    }
+
+    // Print out updated arrays
+    for (int i = 0; i < SIZE; i++) {
+        std::cout << d[i] << " ";
+    }
+    std::cout << std::endl;
+
+    for (int i = 0; i < SIZE; i++) {
+        std::cout << y[i] << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}

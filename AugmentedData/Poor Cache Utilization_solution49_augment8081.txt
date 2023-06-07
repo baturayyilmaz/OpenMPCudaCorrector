@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define SIZE 1000
+
+void modifySharedData(int* sharedData) {
+    #pragma omp parallel
+    {
+        int* privateData = new int[SIZE];
+
+        // Copy shared data to the thread-private copy
+        #pragma omp for
+        for (int i = 0; i < SIZE; i++) {
+            privateData[i] = sharedData[i];
+        }
+
+        // Modify the thread-private copy
+        int threadId = omp_get_thread_num();
+        for (int i = 0; i < SIZE; i++) {
+            privateData[i] += threadId;
+        }
+
+        // Copy the modified data back to the shared array
+        #pragma omp for
+        for (int i = 0; i < SIZE; i++) {
+            sharedData[i] = privateData[i];
+        }
+
+        delete[] privateData;
+    }
+}
+
+int main() {
+    // Initialize the shared data array
+    int sharedData[SIZE];
+
+    for (int i = 0; i < SIZE; i++) {
+        sharedData[i] = i + 1;
+    }
+
+    // Modify shared data across threads
+    modifySharedData(sharedData);
+
+    // Print the modified shared data
+    for (int i = 0; i < SIZE; i++) {
+        printf("%d ", sharedData[i]);
+    }
+    printf("\n");
+
+    return 0;
+}

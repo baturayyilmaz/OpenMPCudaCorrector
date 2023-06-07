@@ -1,0 +1,17 @@
+double main(int d[], int y){
+	double output = 0;
+
+	for (int i = 0; i <= SIZE - 4; i+=4 ){
+		output += d[i] * y;
+		output += d[i+1] * y;
+		output += d[i+2] * y;
+		output += d[i+3] * y;
+	}
+
+	int temp = SIZE - (SIZE % 4);	
+	for (int i=temp; i < SIZE; i++){
+		output += d[i] * y;	
+	}
+	
+	return output;
+}

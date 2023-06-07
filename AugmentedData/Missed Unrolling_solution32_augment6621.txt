@@ -1,0 +1,17 @@
+double foo(int a[], int b){
+	double result = 0;
+
+	for (int i = 0; i <= SIZE - 4; i+=4 ){
+		result += a[i] * b;
+		result += a[i+1] * b;
+		result += a[i+2] * b;
+		result += a[i+3] * b;
+	}
+
+	int temp = SIZE - (SIZE % 4);	
+	for (int i=temp; i < SIZE; i++){
+		result += a[i] * b;	
+	}
+	
+	return result;
+}

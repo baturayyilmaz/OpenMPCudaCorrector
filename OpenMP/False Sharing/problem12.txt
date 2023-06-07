@@ -4,29 +4,29 @@
 
 int <VAR_4> = 10000000;
 
-int main()
+int <FUNC_NAME>()
 {
 
   double start_time = omp_get_wtime();
 
-  double <PARAM_1>[<VAR_4>],  <PARAM_2>[<VAR_4>], <VAR_2>[<VAR_4>];
+  double a[<VAR_4>],  b[<VAR_4>], <VAR_2>[<VAR_4>];
 
 #pragma omp parallel
 {
 
 #pragma omp for
   for(int i=0;i<<VAR_4>;i++){
-    <PARAM_1>[i] = 10;
+    a[i] = 10;
   }
 
 #pragma omp for
   for(int i=0;i<<VAR_4>;i++){
-    <PARAM_2>[i] = 10;
+    b[i] = 10;
   }
 
 #pragma omp for
   for(int i=0;i<<VAR_4>;i++){
-    <VAR_2>[i] = <PARAM_1>[i] + <PARAM_2>[i];
+    <VAR_2>[i] = a[i] + b[i];
   }
 
 }	

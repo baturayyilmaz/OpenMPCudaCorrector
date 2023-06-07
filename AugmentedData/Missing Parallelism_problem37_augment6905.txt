@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define SIZE 1000
+
+void preprocessData(double* data) {
+    for (int i = 0; i < SIZE; i++) {
+        // Perform some computation on data[i]
+        data[i] = data[i] * 2.0;
+    }
+}
+
+int main() {
+    // Initialize the data array
+    double data[SIZE];
+
+    for (int i = 0; i < SIZE; i++) {
+        data[i] = i + 1;
+    }
+
+    // Perform data pre-processing
+    preprocessData(data);
+
+    // Print the pre-processed data
+    for (int i = 0; i < SIZE; i++) {
+        printf("%.2f ", data[i]);
+    }
+    printf("\n");
+
+    return 0;
+}

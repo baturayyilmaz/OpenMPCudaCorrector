@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define N 100
+
+void processLoopWithConditional(int* data) {
+    int sum = 0;
+
+    int positiveCount = 0;
+    #pragma omp parallel for reduction(+:positiveCount)
+    for (int i = 0; i < N; i++) {
+        if (data[i] > 0) {
+            positiveCount++;
+        }
+    }
+
+    #pragma omp parallel for reduction(+:sum)
+    for (int i = 0; i < N; i++) {
+        #pragma omp critical
+        {
+            // Move the conditional statement outside the loop
+            if (data[i] > 0) {
+                sum += data[i];
+            }
+        }
+    }
+
+    printf("Sum of positive elements: %d\n", sum);
+    printf("Count of positive elements: %d\n", positiveCount);
+}
+
+int bar() {
+    int data[N];
+
+    // Initialize the data array
+    for (int i = 0; i < N; i++) {
+        data[i] = i - 50;
+    }
+
+    // Process the loop with conditional statement
+    processLoopWithConditional(data);
+
+    return 0;
+}

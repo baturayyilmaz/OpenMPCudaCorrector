@@ -1,0 +1,10 @@
+double bar(int x[], int b[]){
+	double output = 0;
+	
+	for (int i = 0; i < SIZE; i++)
+	{	
+		output += x[i] + b[i];
+	}
+
+	return output;
+}

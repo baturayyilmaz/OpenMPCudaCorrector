@@ -1,0 +1,23 @@
+int main(int a[], int b){
+	int nthrds = 16;
+	double result = 0;
+	double s_priv[nthrds] = {0};
+
+	#pragma omp parallel num_threads(nthrds)
+	{
+		int t = omp_get_thread_num();
+		#pragma omp for
+		for (int i = 0; i < N; i++){
+			if (a[i] == b){
+				s_priv[t]++;
+			}
+		}	
+	}
+
+	for (int i = 0; i < nthrds; i++)
+	{
+		result += s_priv[i];
+	}
+
+	return result;
+}

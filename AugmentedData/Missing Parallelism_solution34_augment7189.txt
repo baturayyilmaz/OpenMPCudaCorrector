@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <omp.h>
+
+#define N 1000
+
+void matrixMultiplication(int A[N][N], int B[N][N], int C[N][N]) {
+    #pragma omp parallel for collapse(2)
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            C[i][j] = 0;
+            for (int k = 0; k < N; k++) {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
+}
+
+int bar() {
+    int a[N][N];
+    int f[N][N];
+    int <PARAM_3>[N][N];
+
+    // Initialize matrices a and B
+    #pragma omp parallel for collapse(2)
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            a[i][j] = i + j;  // Example initialization
+            f[i][j] = i - j;  // Example initialization
+        }
+    }
+
+    // Perform matrix multiplication
+    matrixMultiplication(a, f, <PARAM_3>);
+
+    // Print the result matrix <PARAM_3>
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            printf("%d ", <PARAM_3>[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}

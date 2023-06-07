@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <omp.h>
 
-#define NUM_ELEMENTS 100000
+#define <VAR_4> 100000
 
 struct Node {
     int data;
@@ -44,14 +44,14 @@ int <FUNC_NAME>() {
     Node* head = NULL;
 
     // Populate the linked list
-    for (int i = 0; i < NUM_ELEMENTS; i++) {
+    for (int i = 0; i < <VAR_4>; i++) {
         head = appendNode(head, i);
     }
 
     // Access elements randomly
     #pragma omp parallel for
-    for (int i = 0; i < NUM_ELEMENTS; i++) {
-        int index = rand() % NUM_ELEMENTS;
+    for (int i = 0; i < <VAR_4>; i++) {
+        int index = rand() % <VAR_4>;
         int data = accessElement(head, index);
         printf("Thread %d: Accessed element at index %d with value %d\n", omp_get_thread_num(), index, data);
     }

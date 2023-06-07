@@ -1,0 +1,17 @@
+double bar(int d[], int b){
+	double result = 0;
+
+	for (int i = 0; i <= N - 4; i+=4 ){
+		result += d[i] * b;
+		result += d[i+1] * b;
+		result += d[i+2] * b;
+		result += d[i+3] * b;
+	}
+
+	int temp = N - (N % 4);	
+	for (int i=temp; i < N; i++){
+		result += d[i] * b;	
+	}
+	
+	return result;
+}

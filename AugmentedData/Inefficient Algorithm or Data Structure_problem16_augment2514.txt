@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>
+
+#define SIZE 100000
+
+void insertElement(int* array, int index, int element) {
+    for (int i = SIZE - 1; i > index; i--) {
+        array[i] = array[i - 1];
+    }
+    array[index] = element;
+}
+
+void deleteElement(int* array, int index) {
+    for (int i = index; i < SIZE - 1; i++) {
+        array[i] = array[i + 1];
+    }
+    array[SIZE - 1] = 0;  // Reset the last element
+}
+
+int foo() {
+    int* d = (int*)malloc(SIZE * sizeof(int));
+
+    // Initialize the array
+    for (int i = 0; i < ARRAY_SIZE; i++) {
+        d[i] = i;
+    }
+
+    int insertIndex = SIZE / 2;  // Insert at the middle
+    int deleteIndex = SIZE / 4;  // Delete from the quarter
+
+    // Insert an element
+    insertElement(d, insertIndex, -1);
+
+    // Delete an element
+    deleteElement(d, deleteIndex);
+
+    // Print the array
+    for (int i = 0; i < SIZE; i++) {
+        printf("%d ", d[i]);
+    }
+    printf("\n");
+
+    free(d);
+
+    return 0;
+}

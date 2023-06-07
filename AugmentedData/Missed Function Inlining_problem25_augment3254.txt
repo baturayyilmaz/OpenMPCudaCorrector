@@ -1,0 +1,24 @@
+#include <omp.h>
+#include <stdio.h>
+
+int multiply(int a, int b) {
+    return a * b;
+}
+
+int main() {
+    int N = 10;
+    int result[N];
+
+    #pragma omp parallel for
+    for (int i = 0; i < N; i++) {
+        // Calling the function multiple times
+        result[i] = multiply(i, i + 1);
+    }
+
+    // Print the results
+    for (int i = 0; i < N; i++) {
+        printf("Result[%d]: %d\n", i, result[i]);
+    }
+
+    return 0;
+}

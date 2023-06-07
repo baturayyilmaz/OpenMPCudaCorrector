@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>
+
+#define SIZE 1000000
+
+void process_array(int* array, int size) {
+    // Perform some computation on the array
+    for (int i = 0; i < size; i++) {
+        array[i] *= 2;
+    }
+}
+
+int main() {
+    int* d = (int*) malloc(SIZE * sizeof(int));
+    int* temp = (int*) malloc(SIZE * sizeof(int));
+
+    // Initialize the array
+    for (int i = 0; i < SIZE; i++) {
+        d[i] = i;
+    }
+
+    #pragma omp parallel for
+    for (int i = 0; i < SIZE; i++) {
+        process_array(temp, SIZE);
+    }
+
+    free(temp);
+    free(d);
+
+    return 0;
+}

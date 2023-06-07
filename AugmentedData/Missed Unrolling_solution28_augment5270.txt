@@ -1,0 +1,17 @@
+double main(int d[], int y[]){
+	double result = 0;
+
+	for (int i = 0; i <= N - 4; i+=4 ){
+		result += d[i] + y[i];
+		result += d[i+1] + y[i+1];
+		result += d[i+2] + y[i+2];
+		result += d[i+3] + y[i+3];
+	}
+
+	int temp = N - (N % 4);	
+	for (int i=temp; i < N; i++){
+		result += d[i] + y[i];	
+	}
+	
+	return result;
+}

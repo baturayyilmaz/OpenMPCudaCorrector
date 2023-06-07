@@ -1,0 +1,29 @@
+int foo(int a[]){
+	int nthrds = 16;	
+	int result = 0;
+	int s_priv[nthrds] = {0};
+
+	#pragma omp parallel num_threads(nthrds)
+	{
+		int t = omp_get_thread_num();
+		int minVal = 9999;
+		#pragma omp for
+		for (int i = 0; i < size; i++){	
+			if (a[i] < minVal){
+				minVal = a[i];
+				s_priv[t] = a[i];
+			}
+		}
+	}
+	
+	int temp = 9999;
+	for (int i = 0; i < nthrds; i++)
+	{
+		if (s_priv[i] < temp){
+			temp = s_priv[i];
+			result = temp;
+		}
+	}
+
+	return result;
+}

@@ -1,0 +1,31 @@
+int main(int a[]){	
+	
+	int NUM_THREADS = 16;	
+	int result = 0;
+	int PADDING = 8;
+	int s_priv[NUM_THREADS * PADDING] = {0};
+	
+	#pragma omp parallel num_threads(NUM_THREADS)
+	{
+		int t = omp_get_thread_num();
+		int minVal = 9999;
+		#pragma omp for
+		for (int i = 0; i < size; i++){	
+			if (a[i] < minVal){
+				minVal = a[i];
+				s_priv[t * PADDING] = a[i];
+			}
+		}
+	}
+
+	int temp = 9999;
+	for (int i = 0; i < NUM_THREADS; i++)
+	{
+		if (s_priv[i * PADDING] < temp){
+			temp = s_priv[i * PADDING];
+			result = temp;
+		}
+	}
+
+	return result;
+}
