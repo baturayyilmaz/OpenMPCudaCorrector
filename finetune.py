@@ -16,7 +16,7 @@ import argparse
 def fineTuneModel(jsonlFileName):
     # jsonlFileName = output file created after running the command mentioned above
     # RUN PREPARE JSONL SCRIPT BEFORE YOU RUN THIS SCRIPT (So, that openai can make adjustments on data!)
-    open_ai_api_key="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"
+    open_ai_api_key="enter your OPENAI-API-KEY"
     openai.api_key=open_ai_api_key
 
     upload_response = openai.File.create(file=open(jsonlFileName, "rb"), purpose='fine-tune')
