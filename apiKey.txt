@@ -1,14 +1,14 @@
-API KEY: "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"
+API KEY: "OPENAI-API-KEY"
 
 PREPARING JSONL COMMAND:
 "openai tools fine_tunes.prepare_data -f data02.jsonl"
 
 FINE_TUNING COMMAND: 
-"openai --api-key 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 api fine_tunes.create -t data02_prepared.jsonl -m davinci --suffix "codeGenerate""
+"openai --api-key OPENAI-API-KEY api fine_tunes.create -t data02_prepared.jsonl -m davinci --suffix "codeGenerate""
 
 LIST ALL CREATED FINE_TUNES COMMAND:
-"openai --api-key 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 api fine_tunes.list"
+"openai --api-key OPENAI-API-KEY api fine_tunes.list"
 
 
 RESUME THE STREAM COMMAND:
-"openai --api-key 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 api fine_tunes.follow -i [NAME_OF_CREATED_FINE_TUNE]"
+"openai --api-key sOPENAI-API-KEY api fine_tunes.follow -i [NAME_OF_CREATED_FINE_TUNE]"
